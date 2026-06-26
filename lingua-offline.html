@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lingua — Learn English Free</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg:       #F0EEE9;
+  --surface:  #FFFFFF;
+  --ink:      #1C1B18;
+  --mid:      #7A7670;
+  --rule:     #DDD9D2;
+  --teal:     #0D7377;
+  --teal-lt:  #E6F4F4;
+  --amber:    #C47A1E;
+  --amber-lt: #FEF4E3;
+  --red:      #B83232;
+  --red-lt:   #FCEAEA;
+  --green:    #2D6A4F;
+  --green-lt: #E8F5EE;
+  --radius:   14px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 12px;
+}
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.logo em { color: var(--teal); font-style: italic; }
+.nav-pills {
+  display: flex;
+  gap: 4px;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 4px;
+  flex-wrap: wrap;
+}
+.nav-pill {
+  border: none;
+  background: none;
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mid);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.nav-pill.active {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.nav-pill:hover:not(.active) { color: var(--ink); }
+.streak-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--amber-lt);
+  color: var(--amber);
+  border: 1px solid #F5D08A;
+  border-radius: 20px;
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+
+/* ── HERO ── */
+.hero {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 52px 28px 36px;
+  text-align: center;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(32px, 5.5vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 14px;
+}
+.hero h1 em { font-style: italic; color: var(--teal); }
+.hero p { color: var(--mid); font-size: 15px; max-width: 440px; margin: 0 auto; }
+
+/* ── PANELS ── */
+.panel { display: none; padding-bottom: 60px; }
+.panel.active { display: block; }
+
+/* ── CARD ── */
+.card {
+  max-width: 680px;
+  margin: 0 auto 24px;
+  padding: 0 24px;
+}
+.card-inner {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.card-icon {
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.ci-teal  { background: var(--teal-lt); }
+.ci-amber { background: var(--amber-lt); }
+.card-head h2 { font-size: 14px; font-weight: 600; flex: 1; }
+.card-body { padding: 22px; }
+
+/* ── SCORE CHIP ── */
+.chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 3px 10px;
+  color: var(--mid);
+  margin-left: auto;
+}
+.chip.good { background: var(--green-lt); color: var(--green); border-color: #9AD4BC; }
+
+/* ── PROGRESS BAR ── */
+.prog-wrap {
+  height: 5px;
+  background: var(--bg);
+  border-radius: 3px;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+.prog-bar {
+  height: 100%;
+  background: var(--teal);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* ── QUESTION BOX ── */
+.q-box {
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  min-height: 64px;
+}
+.lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 6px;
+}
+
+/* ── CHOICES ── */
+.choices { display: flex; flex-direction: column; gap: 9px; }
+.c-btn {
+  text-align: left;
+  background: var(--bg);
+  border: 1.5px solid var(--rule);
+  border-radius: 9px;
+  padding: 12px 15px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  transition: all 0.13s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.c-btn .c-letter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.13s;
+}
+.c-btn:hover:not(:disabled) { border-color: var(--teal); background: var(--teal-lt); }
+.c-btn:hover:not(:disabled) .c-letter { background: var(--teal); color: white; }
+.c-btn.correct  { border-color: var(--green); background: var(--green-lt); }
+.c-btn.correct .c-letter { background: var(--green); color: white; }
+.c-btn.wrong    { border-color: var(--red); background: var(--red-lt); }
+.c-btn.wrong .c-letter { background: var(--red); color: white; }
+.c-btn.reveal   { border-color: var(--green); background: var(--green-lt); }
+.c-btn.reveal .c-letter { background: var(--green); color: white; }
+.c-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+
+/* ── FILL-IN-BLANK ── */
+.blank-input {
+  border: 1.5px solid var(--rule);
+  border-radius: 9px;
+  padding: 12px 15px;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  background: white;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 10px;
+}
+.blank-input:focus { border-color: var(--teal); }
+.blank-input.correct-input { border-color: var(--green); background: var(--green-lt); }
+.blank-input.wrong-input   { border-color: var(--red);   background: var(--red-lt); }
+
+/* ── FEEDBACK ── */
+.feedback {
+  margin-top: 16px;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct { background: var(--green-lt); border: 1px solid #9AD4BC; }
+.feedback.wrong   { background: var(--red-lt);   border: 1px solid #F0ADAD; }
+.feedback.info    { background: var(--teal-lt);  border: 1px solid #8ECECE; }
+.feedback.warn    { background: var(--amber-lt); border: 1px solid #F0C97D; }
+.fb-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.feedback.correct .fb-label { color: var(--green); }
+.feedback.wrong   .fb-label { color: var(--red); }
+.feedback.info    .fb-label { color: var(--teal); }
+.feedback.warn    .fb-label { color: var(--amber); }
+
+/* ── BUTTONS ── */
+.btn-row { display: flex; gap: 9px; margin-top: 14px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+}
+.btn-primary { background: var(--teal); color: white; }
+.btn-primary:hover { background: #0a5e62; }
+.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-ghost {
+  background: var(--bg);
+  color: var(--mid);
+  border: 1.5px solid var(--rule);
+}
+.btn-ghost:hover { color: var(--ink); border-color: #bbb8b0; }
+
+/* ── VOCAB FLIP CARD ── */
+.flip-wrap {
+  perspective: 900px;
+  height: 190px;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+.flip-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+.flip-wrap.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: 11px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  border: 1.5px solid var(--rule);
+  padding: 20px; text-align: center;
+}
+.flip-front { background: white; }
+.flip-back  { background: var(--teal-lt); transform: rotateY(180deg); border-color: #8ECECE; }
+.v-word {
+  font-family: 'Fraunces', serif;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  margin-bottom: 5px;
+}
+.v-pos {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--mid);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.v-def { font-size: 14px; line-height: 1.5; }
+.v-ex  { font-size: 12px; color: var(--mid); margin-top: 7px; font-style: italic; }
+.flip-hint {
+  text-align: center;
+  font-size: 11px;
+  color: var(--mid);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.07em;
+  margin-bottom: 14px;
+}
+
+/* ── TOPIC PILLS ── */
+.pill-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+.pill {
+  background: var(--bg);
+  border: 1.5px solid var(--rule);
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-size: 12px; font-weight: 500;
+  color: var(--mid);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.13s;
+}
+.pill.active, .pill:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-lt);
+}
+.level-pill {
+  background: var(--bg);
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  padding: 4px 11px;
+  font-size: 11px; font-weight: 600;
+  color: var(--mid);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.13s;
+}
+.level-pill.active {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: white;
+}
+
+/* ── STATS GRID ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-box {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 11px;
+  padding: 16px;
+  text-align: center;
+}
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* ── CATEGORY BADGES ── */
+.cat-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--teal-lt);
+  color: var(--teal);
+  border-radius: 4px;
+  padding: 2px 7px;
+  margin-bottom: 10px;
+}
+
+/* ── IDIOM CARD ── */
+.idiom-card {
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.idiom-phrase {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+.idiom-meaning { font-size: 14px; color: var(--ink); margin-bottom: 5px; }
+.idiom-example { font-size: 13px; color: var(--mid); font-style: italic; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 36px 24px;
+  color: var(--mid);
+  font-size: 12px;
+  border-top: 1px solid var(--rule);
+}
+footer em { font-family: 'Fraunces', serif; font-style: italic; color: var(--teal); }
+
+/* ── RESPONSIVE ── */
+@media (max-width:580px) {
+  nav { padding: 12px 14px; }
+  .nav-pills { gap: 2px; }
+  .nav-pill { padding: 5px 10px; font-size: 12px; }
+  .hero { padding: 32px 14px 24px; }
+  .card { padding: 0 12px; }
+  .card-body { padding: 16px; }
+  .stats-grid { grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .stat-num { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><em>Lingua</em> English</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="switchPanel('grammar',this)">Grammar</button>
+    <button class="nav-pill" onclick="switchPanel('vocab',this)">Vocabulary</button>
+    <button class="nav-pill" onclick="switchPanel('idioms',this)">Idioms</button>
+    <button class="nav-pill" onclick="switchPanel('spelling',this)">Spelling</button>
+    <button class="nav-pill" onclick="switchPanel('progress',this)">Progress</button>
+  </div>
+  <div class="streak-badge" id="streak-badge">🔥 0 streak</div>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">No sign-up · No API · 100% free</div>
+  <h1>Learn English<br><em>anywhere</em></h1>
+  <p>Grammar, vocabulary, idioms, and spelling — all built in, works offline, no account needed.</p>
+</div>
+
+<!-- ════════════════════════════════════════
+     GRAMMAR PANEL
+════════════════════════════════════════ -->
+<div id="panel-grammar" class="panel active">
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-head">
+        <div class="card-icon ci-teal">✏️</div>
+        <h2>Grammar Practice</h2>
+        <div class="chip" id="grammar-chip">0 / 0</div>
+      </div>
+      <div class="card-body">
+        <div class="pill-row" id="grammar-topic-pills">
+          <button class="pill active" onclick="setGTopic(this,'all')">All topics</button>
+          <button class="pill" onclick="setGTopic(this,'tenses')">Tenses</button>
+          <button class="pill" onclick="setGTopic(this,'articles')">Articles</button>
+          <button class="pill" onclick="setGTopic(this,'prepositions')">Prepositions</button>
+          <button class="pill" onclick="setGTopic(this,'conditionals')">Conditionals</button>
+          <button class="pill" onclick="setGTopic(this,'modal')">Modal Verbs</button>
+          <button class="pill" onclick="setGTopic(this,'passive')">Passive Voice</button>
+        </div>
+        <div class="prog-wrap"><div class="prog-bar" id="g-prog" style="width:0%"></div></div>
+        <div class="lbl">Question</div>
+        <div class="q-box" id="g-question" style="color:var(--mid);font-style:italic;font-size:14px;">Press "Next question" to begin.</div>
+        <div class="choices" id="g-choices"></div>
+        <div class="feedback" id="g-feedback">
+          <div class="fb-label" id="g-fb-label"></div>
+          <div id="g-fb-text"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="g-next-btn" onclick="nextGrammar()">Next question</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     VOCABULARY PANEL
+════════════════════════════════════════ -->
+<div id="panel-vocab" class="panel">
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-head">
+        <div class="card-icon ci-teal">📖</div>
+        <h2>Vocabulary Builder</h2>
+        <div class="chip" id="vocab-count">0 seen</div>
+      </div>
+      <div class="card-body">
+        <div class="pill-row" id="vocab-topic-pills">
+          <button class="pill active" onclick="setVTopic(this,'all')">All</button>
+          <button class="pill" onclick="setVTopic(this,'business')">Business</button>
+          <button class="pill" onclick="setVTopic(this,'travel')">Travel</button>
+          <button class="pill" onclick="setVTopic(this,'academic')">Academic</button>
+          <button class="pill" onclick="setVTopic(this,'everyday')">Everyday</button>
+          <button class="pill" onclick="setVTopic(this,'emotion')">Emotions</button>
+        </div>
+        <div class="flip-hint">Tap the card to see the definition</div>
+        <div class="flip-wrap" id="v-card" onclick="flipVocab()">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="v-word" id="v-word">—</div>
+              <div class="v-pos"  id="v-pos"></div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="v-def"  id="v-def">Press "New word" to start.</div>
+              <div class="v-ex"   id="v-ex"></div>
+            </div>
+          </div>
+        </div>
+        <div class="feedback" id="v-feedback">
+          <div class="fb-label" id="v-fb-label"></div>
+          <div id="v-fb-text"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="nextVocab()">New word</button>
+          <button class="btn btn-ghost" onclick="quizVocab()" id="v-quiz-btn" style="display:none">Quiz me</button>
+        </div>
+        <div id="v-quiz-area" style="display:none;margin-top:16px">
+          <div class="lbl">Multiple choice — which sentence uses the word correctly?</div>
+          <div class="choices" id="v-quiz-choices" style="margin-top:8px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     IDIOMS PANEL
+════════════════════════════════════════ -->
+<div id="panel-idioms" class="panel">
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-head">
+        <div class="card-icon ci-amber">💬</div>
+        <h2>Idioms & Phrases</h2>
+        <div class="chip" id="idiom-chip">0 / 0</div>
+      </div>
+      <div class="card-body">
+        <div class="pill-row">
+          <button class="pill active" onclick="setIdiomMode(this,'learn')">Learn</button>
+          <button class="pill" onclick="setIdiomMode(this,'quiz')">Quiz</button>
+        </div>
+        <div id="idiom-learn-area">
+          <div class="idiom-card" id="idiom-display">
+            <div class="idiom-phrase" id="i-phrase">Press "Next idiom" to start.</div>
+            <div class="idiom-meaning" id="i-meaning"></div>
+            <div class="idiom-example" id="i-example"></div>
+          </div>
+        </div>
+        <div id="idiom-quiz-area" style="display:none">
+          <div class="lbl">What does this idiom mean?</div>
+          <div class="q-box" id="iq-phrase" style="font-family:'Fraunces',serif;font-size:20px;font-style:italic;"></div>
+          <div class="choices" id="iq-choices" style="margin-top:10px"></div>
+          <div class="feedback" id="iq-feedback">
+            <div class="fb-label" id="iq-fb-label"></div>
+            <div id="iq-fb-text"></div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="idiom-next-btn" onclick="nextIdiom()">Next idiom</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SPELLING PANEL
+════════════════════════════════════════ -->
+<div id="panel-spelling" class="panel">
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-head">
+        <div class="card-icon ci-teal">🔤</div>
+        <h2>Spelling Practice</h2>
+        <div class="chip" id="spell-chip">0 / 0</div>
+      </div>
+      <div class="card-body">
+        <div class="pill-row" id="spell-diff-pills">
+          <button class="level-pill active" onclick="setSpellDiff(this,'easy')">Easy</button>
+          <button class="level-pill" onclick="setSpellDiff(this,'medium')">Medium</button>
+          <button class="level-pill" onclick="setSpellDiff(this,'hard')">Hard</button>
+        </div>
+        <div class="lbl">Definition / hint</div>
+        <div class="q-box" id="spell-hint" style="color:var(--mid);font-style:italic;font-size:14px;">Press "New word" to begin.</div>
+        <div style="margin-top:4px">
+          <div class="lbl">Type the word</div>
+          <input type="text" class="blank-input" id="spell-input" placeholder="Type your answer here…" autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter')checkSpelling()">
+        </div>
+        <div class="feedback" id="spell-feedback">
+          <div class="fb-label" id="spell-fb-label"></div>
+          <div id="spell-fb-text"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="checkSpelling()">Check</button>
+          <button class="btn btn-ghost" id="spell-next-btn" onclick="nextSpelling()">New word</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PROGRESS PANEL
+════════════════════════════════════════ -->
+<div id="panel-progress" class="panel">
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-head">
+        <div class="card-icon ci-amber">📊</div>
+        <h2>Your Progress</h2>
+      </div>
+      <div class="card-body">
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-num" id="p-total">0</div>
+            <div class="stat-lbl">Questions</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="p-correct" style="color:var(--green)">0</div>
+            <div class="stat-lbl">Correct</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="p-streak" style="color:var(--amber)">0</div>
+            <div class="stat-lbl">Streak 🔥</div>
+          </div>
+        </div>
+        <div class="stats-grid" style="margin-top:0">
+          <div class="stat-box">
+            <div class="stat-num" id="p-vocab">0</div>
+            <div class="stat-lbl">Words seen</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="p-idioms">0</div>
+            <div class="stat-lbl">Idioms</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="p-accuracy">—</div>
+            <div class="stat-lbl">Accuracy</div>
+          </div>
+        </div>
+        <div class="feedback info show" style="margin-top:4px">
+          <div class="fb-label">Tip</div>
+          <div id="p-tip">Complete some exercises to see your progress here.</div>
+        </div>
+        <div class="btn-row" style="margin-top:20px">
+          <button class="btn btn-ghost" onclick="resetProgress()">Reset all progress</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <em>Lingua</em> English · All content built-in · Works offline · Free forever
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════════════════
+
+const GRAMMAR = [
+  // TENSES
+  {topic:'tenses',q:'She ___ to work every day by bus.',choices:['A: goes','B: go','C: is going','D: went'],correct:'A',exp:'We use the simple present for regular habits and routines.'},
+  {topic:'tenses',q:'They ___ dinner when I arrived.',choices:['A: have','B: were having','C: are having','D: had'],correct:'B',exp:'The past continuous describes an action in progress when another action interrupted it.'},
+  {topic:'tenses',q:'By next year, I ___ here for ten years.',choices:['A: will work','B: have worked','C: will have worked','D: worked'],correct:'C',exp:'Future perfect expresses an action that will be complete before a future point in time.'},
+  {topic:'tenses',q:'I ___ this book already. I read it last summer.',choices:['A: have read','B: read','C: was reading','D: am reading'],correct:'A',exp:'Present perfect connects a past experience to the present moment.'},
+  {topic:'tenses',q:'When she arrived, we ___ for two hours.',choices:['A: waited','B: were waiting','C: had been waiting','D: have waited'],correct:'C',exp:'Past perfect continuous shows a continuous action that happened before a past moment.'},
+  {topic:'tenses',q:'He ___ his keys, so he couldn\'t get in.',choices:['A: loses','B: lost','C: has lost','D: had lost'],correct:'D',exp:'Past perfect shows an action completed before another past event.'},
+  {topic:'tenses',q:'The train ___ by the time we reached the station.',choices:['A: left','B: has left','C: had left','D: was leaving'],correct:'C',exp:'Past perfect is used for an action completed before a reference point in the past.'},
+  {topic:'tenses',q:'Look out! You ___ fall!',choices:['A: are going to','B: will','C: would','D: shall'],correct:'A',exp:'"Going to" expresses a prediction based on present evidence.'},
+  {topic:'tenses',q:'I ___ my homework before dinner tonight.',choices:['A: finish','B: will finish','C: finished','D: am finishing'],correct:'B',exp:'Simple future (will) is used for predictions and decisions made at the moment of speaking.'},
+  {topic:'tenses',q:'She ___ for three hours before she finally found a solution.',choices:['A: thought','B: was thinking','C: had been thinking','D: has thought'],correct:'C',exp:'Past perfect continuous emphasises the duration of an activity before a past point.'},
+  // ARTICLES
+  {topic:'articles',q:'I saw ___ elephant at the zoo yesterday.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" is used before words starting with a vowel sound. "Elephant" begins with a vowel sound.'},
+  {topic:'articles',q:'___ sun rises in the east.',choices:['A: A','B: An','C: The','D: —'],correct:'C',exp:'We use "the" with unique things — there is only one sun.'},
+  {topic:'articles',q:'She wants to be ___ engineer when she grows up.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" is used before vowel sounds. "Engineer" starts with a vowel sound.'},
+  {topic:'articles',q:'Can you pass me ___ salt, please?',choices:['A: a','B: an','C: the','D: —'],correct:'C',exp:'"The" is used when referring to a specific item both speakers know about.'},
+  {topic:'articles',q:'He plays ___ guitar beautifully.',choices:['A: a','B: an','C: the','D: —'],correct:'C',exp:'We use "the" with musical instruments.'},
+  {topic:'articles',q:'I had ___ interesting conversation with her.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" before "interesting" because it starts with a vowel sound.'},
+  {topic:'articles',q:'___ life is full of surprises.',choices:['A: A','B: An','C: The','D: —'],correct:'D',exp:'No article is used with abstract nouns in a general sense.'},
+  {topic:'articles',q:'She is ___ best student in the class.',choices:['A: a','B: an','C: the','D: —'],correct:'C',exp:'"The" is used with superlatives.'},
+  // PREPOSITIONS
+  {topic:'prepositions',q:'She has been waiting ___ two hours.',choices:['A: since','B: for','C: during','D: from'],correct:'B',exp:'"For" is used with a duration of time (how long).'},
+  {topic:'prepositions',q:'I\'ve lived here ___ 2018.',choices:['A: for','B: during','C: since','D: from'],correct:'C',exp:'"Since" is used with a specific point in time (when something started).'},
+  {topic:'prepositions',q:'The meeting is ___ Monday morning.',choices:['A: in','B: at','C: on','D: by'],correct:'C',exp:'"On" is used with days and dates.'},
+  {topic:'prepositions',q:'She was born ___ 1990.',choices:['A: on','B: at','C: in','D: for'],correct:'C',exp:'"In" is used with years, months, and longer periods.'},
+  {topic:'prepositions',q:'He arrived ___ the airport an hour early.',choices:['A: in','B: on','C: to','D: at'],correct:'D',exp:'"At" is used for specific places like airports, stations, and buildings.'},
+  {topic:'prepositions',q:'The picture is hanging ___ the wall.',choices:['A: at','B: on','C: in','D: above'],correct:'B',exp:'"On" is used for surfaces.'},
+  {topic:'prepositions',q:'She\'s good ___ mathematics.',choices:['A: at','B: in','C: for','D: on'],correct:'A',exp:'"Good at" is the correct collocation for skills and subjects.'},
+  // CONDITIONALS
+  {topic:'conditionals',q:'If it rains tomorrow, we ___ the match.',choices:['A: cancel','B: will cancel','C: would cancel','D: cancelled'],correct:'B',exp:'First conditional (real possibility): if + present simple, will + infinitive.'},
+  {topic:'conditionals',q:'If I ___ rich, I would travel the world.',choices:['A: am','B: was','C: were','D: will be'],correct:'C',exp:'Second conditional uses "were" (formal) for hypothetical present/future situations.'},
+  {topic:'conditionals',q:'If she had studied harder, she ___ the exam.',choices:['A: would pass','B: would have passed','C: will pass','D: passed'],correct:'B',exp:'Third conditional: if + past perfect, would have + past participle. For unreal past situations.'},
+  {topic:'conditionals',q:'Unless you hurry, you ___ the bus.',choices:['A: miss','B: will miss','C: missed','D: would miss'],correct:'B',exp:'"Unless" means "if not." It follows the same pattern as the first conditional.'},
+  {topic:'conditionals',q:'If water ___ to 100°C, it boils.',choices:['A: heats','B: heated','C: would heat','D: will heat'],correct:'A',exp:'Zero conditional uses present simple in both clauses for universal truths.'},
+  // MODAL VERBS
+  {topic:'modal',q:'You ___ see a doctor. That cough sounds serious.',choices:['A: could','B: might','C: should','D: can'],correct:'C',exp:'"Should" expresses advice or recommendation.'},
+  {topic:'modal',q:'She ___ speak five languages fluently.',choices:['A: can','B: should','C: must','D: would'],correct:'A',exp:'"Can" expresses ability.'},
+  {topic:'modal',q:'You ___ smoke in this building. It\'s forbidden.',choices:['A: shouldn\'t','B: mustn\'t','C: don\'t have to','D: couldn\'t'],correct:'B',exp:'"Mustn\'t" expresses prohibition — something is not allowed.'},
+  {topic:'modal',q:'You ___ bring your passport — it\'s optional.',choices:['A: mustn\'t','B: shouldn\'t','C: don\'t have to','D: can\'t'],correct:'C',exp:'"Don\'t have to" means it is not necessary, but there\'s no prohibition.'},
+  {topic:'modal',q:'That ___ be Tom at the door — he said he\'d be here at 7.',choices:['A: can','B: must','C: should','D: would'],correct:'B',exp:'"Must" expresses logical deduction — strong certainty.'},
+  {topic:'modal',q:'___ you mind closing the window, please?',choices:['A: Will','B: Would','C: Should','D: Shall'],correct:'B',exp:'"Would you mind" is a polite way to make a request.'},
+  // PASSIVE VOICE
+  {topic:'passive',q:'The letter ___ by the manager yesterday.',choices:['A: signed','B: was signed','C: has signed','D: is signed'],correct:'B',exp:'Past simple passive: was/were + past participle.'},
+  {topic:'passive',q:'English ___ all over the world.',choices:['A: speaks','B: spoke','C: is spoken','D: was spoken'],correct:'C',exp:'Present simple passive: is/are + past participle for general facts.'},
+  {topic:'passive',q:'The new bridge ___ by next year.',choices:['A: will complete','B: will be completed','C: is completed','D: completes'],correct:'B',exp:'Future passive: will be + past participle.'},
+  {topic:'passive',q:'The report ___ before the meeting starts.',choices:['A: must submit','B: must be submitted','C: must have submitted','D: must submitting'],correct:'B',exp:'Modal passive: modal + be + past participle.'},
+  {topic:'passive',q:'The windows ___ cleaned since last month.',choices:['A: haven\'t','B: haven\'t been','C: weren\'t','D: aren\'t'],correct:'B',exp:'Present perfect passive: have/has been + past participle.'},
+];
+
+const VOCAB = [
+  // BUSINESS
+  {topic:'business',word:'negotiate',pos:'verb',def:'To discuss something in order to reach an agreement.',ex:'We need to negotiate the price before signing the contract.'},
+  {topic:'business',word:'revenue',pos:'noun',def:'The total income produced by a business.',ex:'The company\'s revenue increased by 15% this quarter.'},
+  {topic:'business',word:'delegate',pos:'verb',def:'To give part of your work or responsibility to someone else.',ex:'A good manager knows how to delegate tasks effectively.'},
+  {topic:'business',word:'collaborate',pos:'verb',def:'To work jointly with others on a shared project.',ex:'The two companies decided to collaborate on the new product.'},
+  {topic:'business',word:'initiative',pos:'noun',def:'The power or ability to begin or to follow through with a plan.',ex:'She took the initiative to reorganise the office filing system.'},
+  {topic:'business',word:'strategic',pos:'adjective',def:'Relating to a plan designed to achieve a long-term aim.',ex:'They made a strategic decision to enter the Asian market.'},
+  {topic:'business',word:'stakeholder',pos:'noun',def:'A person with an interest or concern in a business.',ex:'We presented the report to all key stakeholders.'},
+  {topic:'business',word:'invoice',pos:'noun',def:'A list of goods or services provided, with a statement of the price.',ex:'Please send the invoice to our accounts department.'},
+  // TRAVEL
+  {topic:'travel',word:'itinerary',pos:'noun',def:'A detailed plan or route of a journey.',ex:'The travel agent prepared a full itinerary for our trip to Japan.'},
+  {topic:'travel',word:'layover',pos:'noun',def:'A period of rest or waiting before a further stage of a journey.',ex:'We had a three-hour layover in Dubai.'},
+  {topic:'travel',word:'departure',pos:'noun',def:'The action of leaving, typically to start a journey.',ex:'Our departure from London is at 6 a.m.'},
+  {topic:'travel',word:'accommodation',pos:'noun',def:'A place where someone can live or stay, especially temporarily.',ex:'We booked accommodation near the city centre.'},
+  {topic:'travel',word:'currency',pos:'noun',def:'A system of money in general use in a particular country.',ex:'Make sure you exchange your currency before you arrive.'},
+  {topic:'travel',word:'passport',pos:'noun',def:'An official document issued by a government, certifying the holder\'s identity.',ex:'Never leave your passport in your hotel room.'},
+  // ACADEMIC
+  {topic:'academic',word:'hypothesis',pos:'noun',def:'A proposed explanation made on the basis of limited evidence as a starting point for investigation.',ex:'The scientist tested her hypothesis with a series of experiments.'},
+  {topic:'academic',word:'analyze',pos:'verb',def:'To examine methodically and in detail.',ex:'We analyzed the data and found a significant pattern.'},
+  {topic:'academic',word:'cite',pos:'verb',def:'To refer to a source of information or evidence.',ex:'You must cite all sources in your research paper.'},
+  {topic:'academic',word:'critique',pos:'noun',def:'A detailed analysis and assessment of something.',ex:'She wrote a critique of the author\'s argument.'},
+  {topic:'academic',word:'elaborate',pos:'verb',def:'To develop or present a theory in further detail.',ex:'Could you elaborate on your point about climate change?'},
+  {topic:'academic',word:'implication',pos:'noun',def:'A likely consequence of something.',ex:'The implications of this discovery are enormous.'},
+  // EVERYDAY
+  {topic:'everyday',word:'accomplish',pos:'verb',def:'To achieve or complete successfully.',ex:'I want to accomplish my goals before the end of the year.'},
+  {topic:'everyday',word:'convenient',pos:'adjective',def:'Fitting in well with a person\'s needs or activities.',ex:'The supermarket is conveniently located near our house.'},
+  {topic:'everyday',word:'reluctant',pos:'adjective',def:'Unwilling and hesitant; disinclined.',ex:'She was reluctant to ask for help.'},
+  {topic:'everyday',word:'exhausted',pos:'adjective',def:'Drained of one\'s physical or mental resources.',ex:'After the marathon, she felt completely exhausted.'},
+  {topic:'everyday',word:'grateful',pos:'adjective',def:'Feeling or showing an appreciation for something done.',ex:'I am so grateful for your help yesterday.'},
+  {topic:'everyday',word:'curious',pos:'adjective',def:'Eager to know or learn something.',ex:'Children are naturally curious about the world around them.'},
+  {topic:'everyday',word:'recommend',pos:'verb',def:'To put forward with approval as being suitable for a purpose.',ex:'Can you recommend a good restaurant near here?'},
+  // EMOTION
+  {topic:'emotion',word:'melancholy',pos:'noun/adj',def:'A feeling of pensive sadness, typically with no obvious cause.',ex:'There was a sense of melancholy in his voice.'},
+  {topic:'emotion',word:'apprehensive',pos:'adjective',def:'Anxious or fearful that something bad will happen.',ex:'She felt apprehensive before her driving test.'},
+  {topic:'emotion',word:'elated',pos:'adjective',def:'Very happy and excited.',ex:'He was elated when he heard the good news.'},
+  {topic:'emotion',word:'overwhelmed',pos:'adjective',def:'Buried or drowned beneath a huge mass of something; very affected.',ex:'She felt overwhelmed by all the work she had to do.'},
+  {topic:'emotion',word:'content',pos:'adjective',def:'In a state of peaceful happiness and satisfaction.',ex:'He was content with his simple, quiet life.'},
+  {topic:'emotion',word:'anxious',pos:'adjective',def:'Experiencing worry, nervousness, or unease.',ex:'I always feel anxious before a big presentation.'},
+  {topic:'emotion',word:'empathy',pos:'noun',def:'The ability to understand and share the feelings of another.',ex:'Good doctors show empathy towards their patients.'},
+];
+
+const IDIOMS = [
+  {phrase:'Break the ice',meaning:'To do or say something to relieve tension or start a conversation.',example:'"He told a joke to break the ice at the meeting."'},
+  {phrase:'Hit the nail on the head',meaning:'To describe exactly what is causing a situation or problem.',example:'"You hit the nail on the head — that\'s exactly the issue."'},
+  {phrase:'Bite the bullet',meaning:'To endure a painful or difficult situation that is unavoidable.',example:'"I didn\'t want to go to the dentist, but I bit the bullet."'},
+  {phrase:'Spill the beans',meaning:'To reveal secret information accidentally or indiscreetly.',example:'"Who spilled the beans about the surprise party?"'},
+  {phrase:'A blessing in disguise',meaning:'Something that seems bad at first but turns out to be good.',example:'"Losing that job was a blessing in disguise — I found a better one."'},
+  {phrase:'Beat around the bush',meaning:'To avoid talking about something directly.',example:'"Stop beating around the bush and tell me what happened."'},
+  {phrase:'Cost an arm and a leg',meaning:'To be very expensive.',example:'"That restaurant costs an arm and a leg."'},
+  {phrase:'Once in a blue moon',meaning:'Very rarely.',example:'"I only eat fast food once in a blue moon."'},
+  {phrase:'Under the weather',meaning:'Feeling slightly ill.',example:'"I\'m feeling a bit under the weather today."'},
+  {phrase:'Hit the sack',meaning:'To go to bed.',example:'"I\'m exhausted — I\'m going to hit the sack."'},
+  {phrase:'Let the cat out of the bag',meaning:'To accidentally reveal a secret.',example:'"She let the cat out of the bag about the wedding plans."'},
+  {phrase:'The ball is in your court',meaning:'It is your responsibility to take the next action.',example:'"I\'ve made my offer — the ball is in your court now."'},
+  {phrase:'A piece of cake',meaning:'Something very easy to do.',example:'"The exam was a piece of cake."'},
+  {phrase:'Pull someone\'s leg',meaning:'To joke or tease someone.',example:'"Don\'t worry, I was just pulling your leg!"'},
+  {phrase:'Burn the midnight oil',meaning:'To work late into the night.',example:'"She burned the midnight oil to finish the report."'},
+  {phrase:'Sit on the fence',meaning:'To avoid taking sides in a dispute.',example:'"Stop sitting on the fence and give me your opinion."'},
+  {phrase:'Jump on the bandwagon',meaning:'To follow a popular trend.',example:'"Everyone is jumping on the bandwagon with electric cars."'},
+  {phrase:'Hit the books',meaning:'To study.',example:'"Exams are next week, so I need to hit the books."'},
+  {phrase:'Bite off more than you can chew',meaning:'To take on more than you can handle.',example:'"He bit off more than he could chew with three jobs."'},
+  {phrase:'Get out of hand',meaning:'To become impossible to control.',example:'"The party got out of hand very quickly."'},
+];
+
+const SPELLING = {
+  easy:[
+    {word:'beautiful',hint:'Very pleasing to the senses or mind.'},
+    {word:'necessary',hint:'Required to be done; essential.'},
+    {word:'separate',hint:'To divide or cause to move apart.'},
+    {word:'definitely',hint:'Without doubt; certainly.'},
+    {word:'embarrass',hint:'To cause to feel awkward or ashamed.'},
+    {word:'occurred',hint:'Happened; took place.'},
+    {word:'receive',hint:'To get or be given something.'},
+    {word:'believe',hint:'To accept something as true.'},
+    {word:'achieve',hint:'To successfully reach a desired goal.'},
+    {word:'friend',hint:'A person with whom you have a bond of mutual affection.'},
+  ],
+  medium:[
+    {word:'accommodate',hint:'To provide space or lodging for someone.'},
+    {word:'conscientious',hint:'Wishing to do what is right; very careful.'},
+    {word:'millennium',hint:'A period of one thousand years.'},
+    {word:'entrepreneur',hint:'A person who starts a business.'},
+    {word:'bureaucracy',hint:'A system of government with many rules and procedures.'},
+    {word:'acknowledge',hint:'To recognise or admit the existence of something.'},
+    {word:'perseverance',hint:'Continued effort despite difficulty.'},
+    {word:'Mediterranean',hint:'Relating to the sea between Europe and Africa.'},
+    {word:'miscellaneous',hint:'A variety of different kinds.'},
+    {word:'pronunciation',hint:'The way in which a word is said.'},
+  ],
+  hard:[
+    {word:'conscientious',hint:'Taking great care to do things correctly.'},
+    {word:'onomatopoeia',hint:'A word that phonetically imitates the sound it describes.'},
+    {word:'supercilious',hint:'Behaving as though you are superior to others.'},
+    {word:'serendipity',hint:'The occurrence of events by chance in a happy way.'},
+    {word:'acquiesce',hint:'To accept something without protest.'},
+    {word:'nonchalant',hint:'Feeling or appearing casually calm and relaxed.'},
+    {word:'perspicacious',hint:'Having a ready insight; shrewd.'},
+    {word:'ephemeral',hint:'Lasting for a very short time.'},
+    {word:'idiosyncratic',hint:'Relating to peculiar individual behaviour.'},
+    {word:'surreptitious',hint:'Kept secret, especially because it would not be approved of.'},
+  ]
+};
+
+// ══════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════
+const S = {
+  grammarTopic: 'all',
+  grammarDone: [],
+  grammarCorrect: 0,
+  grammarTotal: 0,
+  grammarAnswered: false,
+
+  vocabTopic: 'all',
+  vocabSeen: [],
+  vocabCount: 0,
+  currentVocab: null,
+  vocabFlipped: false,
+
+  idiomMode: 'learn',
+  idiomIndex: 0,
+  idiomShuffled: [],
+  idiomDone: 0,
+
+  spellDiff: 'easy',
+  spellDone: [],
+  spellCorrect: 0,
+  spellTotal: 0,
+  currentSpell: null,
+
+  streak: 0,
+  totalQ: 0,
+  totalCorrect: 0,
+  vocabStat: 0,
+  idiomStat: 0,
+};
+
+// ══════════════════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function pick(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+function activatePills(container, btn) {
+  container.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function showFB(id, type, label, text) {
+  const el = document.getElementById(id);
+  el.className = 'feedback show ' + type;
+  document.getElementById(id+'-label').textContent = label;
+  document.getElementById(id+'-text').innerHTML = text;
+}
+function hideFB(id) { document.getElementById(id).className = 'feedback'; }
+
+function updateStreak(correct) {
+  S.totalQ++;
+  if (correct) { S.streak++; S.totalCorrect++; }
+  else S.streak = 0;
+  document.getElementById('streak-badge').textContent = `🔥 ${S.streak} streak`;
+}
+function saveProgress() {
+  localStorage.setItem('lingua_progress', JSON.stringify({
+    totalQ: S.totalQ, totalCorrect: S.totalCorrect,
+    streak: S.streak, vocabStat: S.vocabStat, idiomStat: S.idiomStat
+  }));
+}
+function loadProgress() {
+  try {
+    const d = JSON.parse(localStorage.getItem('lingua_progress') || '{}');
+    S.totalQ = d.totalQ||0; S.totalCorrect = d.totalCorrect||0;
+    S.streak = d.streak||0; S.vocabStat = d.vocabStat||0; S.idiomStat = d.idiomStat||0;
+    document.getElementById('streak-badge').textContent = `🔥 ${S.streak} streak`;
+  } catch {}
+}
+
+// ══════════════════════════════════════════════════════════
+//  PANEL SWITCHING
+// ══════════════════════════════════════════════════════════
+function switchPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-pill').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'progress') updateProgress();
+}
+
+// ══════════════════════════════════════════════════════════
+//  GRAMMAR
+// ══════════════════════════════════════════════════════════
+function setGTopic(btn, topic) {
+  activatePills(document.getElementById('grammar-topic-pills'), btn);
+  S.grammarTopic = topic;
+  S.grammarDone = [];
+  S.grammarAnswered = false;
+  hideFB('g-feedback');
+  document.getElementById('g-question').textContent = 'Topic changed. Press "Next question".';
+  document.getElementById('g-question').style.cssText = 'color:var(--mid);font-style:italic;font-size:14px';
+  document.getElementById('g-choices').innerHTML = '';
+  updateGrammarChip();
+}
+
+function getGrammarPool() {
+  return S.grammarTopic === 'all' ? GRAMMAR : GRAMMAR.filter(q => q.topic === S.grammarTopic);
+}
+
+function nextGrammar() {
+  S.grammarAnswered = false;
+  hideFB('g-feedback');
+  document.getElementById('g-choices').innerHTML = '';
+
+  let pool = getGrammarPool();
+  let available = pool.filter((_,i) => !S.grammarDone.includes(i + (S.grammarTopic==='all'?0:0)));
+  // track by question text instead of index for simplicity
+  let unused = pool.filter(q => !S.grammarDone.includes(q.q));
+  if (unused.length === 0) {
+    S.grammarDone = [];
+    unused = pool;
+  }
+
+  const q = pick(unused);
+  S.grammarDone.push(q.q);
+
+  const qEl = document.getElementById('g-question');
+  qEl.textContent = q.q;
+  qEl.style.cssText = '';
+
+  // progress bar
+  const pct = Math.round((S.grammarDone.length / pool.length) * 100);
+  document.getElementById('g-prog').style.width = pct + '%';
+
+  const choicesEl = document.getElementById('g-choices');
+  choicesEl.innerHTML = '';
+  q.choices.forEach(c => {
+    const letter = c.split(':')[0].trim();
+    const btn = document.createElement('button');
+    btn.className = 'c-btn';
+    btn.innerHTML = `<span class="c-letter">${letter}</span><span>${c.substring(3)}</span>`;
+    btn.dataset.letter = letter;
+    btn.onclick = () => answerGrammar(btn, q.correct, q.exp);
+    choicesEl.appendChild(btn);
+  });
+}
+
+function answerGrammar(btn, correct, exp) {
+  if (S.grammarAnswered) return;
+  S.grammarAnswered = true;
+  S.grammarTotal++;
+
+  const isCorrect = btn.dataset.letter === correct;
+  if (isCorrect) { btn.classList.add('correct'); S.grammarCorrect++; }
+  else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('#g-choices .c-btn').forEach(b => {
+      if (b.dataset.letter === correct) b.classList.add('reveal');
+    });
+  }
+  document.querySelectorAll('#g-choices .c-btn').forEach(b => b.disabled = true);
+  showFB('g-feedback', isCorrect?'correct':'wrong', isCorrect?'✓ Correct':'✗ Incorrect', exp);
+  updateStreak(isCorrect);
+  updateGrammarChip();
+  saveProgress();
+}
+
+function updateGrammarChip() {
+  const chip = document.getElementById('grammar-chip');
+  chip.textContent = `${S.grammarCorrect} / ${S.grammarTotal}`;
+  chip.className = 'chip' + (S.grammarTotal > 0 && S.grammarCorrect/S.grammarTotal >= 0.7 ? ' good' : '');
+}
+
+// ══════════════════════════════════════════════════════════
+//  VOCABULARY
+// ══════════════════════════════════════════════════════════
+function setVTopic(btn, topic) {
+  activatePills(document.getElementById('vocab-topic-pills'), btn);
+  S.vocabTopic = topic;
+  S.vocabSeen = [];
+}
+
+function getVocabPool() {
+  return S.vocabTopic === 'all' ? VOCAB : VOCAB.filter(v => v.topic === S.vocabTopic);
+}
+
+function nextVocab() {
+  hideFB('v-feedback');
+  document.getElementById('v-card').classList.remove('flipped');
+  document.getElementById('v-quiz-area').style.display = 'none';
+  document.getElementById('v-quiz-btn').style.display = 'none';
+  S.vocabFlipped = false;
+
+  let pool = getVocabPool();
+  let unused = pool.filter(v => !S.vocabSeen.includes(v.word));
+  if (unused.length === 0) { S.vocabSeen = []; unused = pool; }
+
+  const v = pick(unused);
+  S.vocabSeen.push(v.word);
+  S.currentVocab = v;
+  S.vocabStat++;
+
+  document.getElementById('v-word').textContent = v.word;
+  document.getElementById('v-pos').textContent = v.pos;
+  document.getElementById('v-def').textContent = v.def;
+  document.getElementById('v-ex').textContent = '"' + v.ex + '"';
+
+  S.vocabCount++;
+  document.getElementById('vocab-count').textContent = S.vocabCount + ' seen';
+  document.getElementById('v-quiz-btn').style.display = 'inline-flex';
+  saveProgress();
+}
+
+function flipVocab() {
+  if (!S.currentVocab) return;
+  S.vocabFlipped = !S.vocabFlipped;
+  document.getElementById('v-card').classList.toggle('flipped', S.vocabFlipped);
+}
+
+function quizVocab() {
+  if (!S.currentVocab) return;
+  const v = S.currentVocab;
+  document.getElementById('v-quiz-area').style.display = 'block';
+  hideFB('v-feedback');
+
+  // Build 4 choices: 1 correct example sentence + 3 wrong uses
+  const pool = VOCAB.filter(x => x.word !== v.word);
+  const wrongs = shuffle(pool).slice(0,3).map(w => w.ex.replace(w.word, v.word));
+  const allChoices = shuffle([v.ex, ...wrongs]);
+
+  const choicesEl = document.getElementById('v-quiz-choices');
+  choicesEl.innerHTML = '';
+  allChoices.forEach((c, i) => {
+    const letters = ['A','B','C','D'];
+    const btn = document.createElement('button');
+    btn.className = 'c-btn';
+    btn.innerHTML = `<span class="c-letter">${letters[i]}</span><span>${c}</span>`;
+    btn.onclick = () => {
+      const correct = c === v.ex;
+      btn.classList.add(correct ? 'correct' : 'wrong');
+      if (!correct) choicesEl.querySelectorAll('.c-btn').forEach(b => {
+        if (b.querySelector('span:last-child').textContent === v.ex) b.classList.add('reveal');
+      });
+      choicesEl.querySelectorAll('.c-btn').forEach(b => b.disabled = true);
+      showFB('v-feedback', correct?'correct':'wrong', correct?'✓ Correct':'✗ Incorrect',
+        correct ? `"${v.word}" is used correctly in that sentence.` : `The correct use is: "${v.ex}"`);
+      updateStreak(correct);
+      saveProgress();
+    };
+    choicesEl.appendChild(btn);
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+//  IDIOMS
+// ══════════════════════════════════════════════════════════
+function setIdiomMode(btn, mode) {
+  activatePills(btn.closest('.pill-row'), btn);
+  S.idiomMode = mode;
+  document.getElementById('idiom-learn-area').style.display = mode === 'learn' ? 'block' : 'none';
+  document.getElementById('idiom-quiz-area').style.display = mode === 'quiz' ? 'block' : 'none';
+  hideFB('iq-feedback');
+  if (mode === 'quiz') nextIdiomQuiz();
+}
+
+function nextIdiom() {
+  if (S.idiomMode === 'learn') {
+    if (S.idiomShuffled.length === 0 || S.idiomIndex >= S.idiomShuffled.length) {
+      S.idiomShuffled = shuffle(IDIOMS);
+      S.idiomIndex = 0;
+    }
+    const id = S.idiomShuffled[S.idiomIndex++];
+    document.getElementById('i-phrase').textContent = id.phrase;
+    document.getElementById('i-meaning').textContent = '💡 ' + id.meaning;
+    document.getElementById('i-example').textContent = id.example;
+    S.idiomDone++;
+    S.idiomStat++;
+    document.getElementById('idiom-chip').textContent = S.idiomDone + ' learned';
+    saveProgress();
+  } else {
+    nextIdiomQuiz();
+  }
+}
+
+function nextIdiomQuiz() {
+  hideFB('iq-feedback');
+  const correct = pick(IDIOMS);
+  document.getElementById('iq-phrase').textContent = correct.phrase;
+
+  const wrongs = shuffle(IDIOMS.filter(i => i.phrase !== correct.phrase)).slice(0,3);
+  const allChoices = shuffle([correct, ...wrongs]);
+
+  const choicesEl = document.getElementById('iq-choices');
+  choicesEl.innerHTML = '';
+  allChoices.forEach((c, i) => {
+    const letters = ['A','B','C','D'];
+    const btn = document.createElement('button');
+    btn.className = 'c-btn';
+    btn.innerHTML = `<span class="c-letter">${letters[i]}</span><span>${c.meaning}</span>`;
+    btn.onclick = () => {
+      const isCorrect = c.phrase === correct.phrase;
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      if (!isCorrect) choicesEl.querySelectorAll('.c-btn').forEach(b => {
+        if (b.querySelector('span:last-child').textContent === correct.meaning) b.classList.add('reveal');
+      });
+      choicesEl.querySelectorAll('.c-btn').forEach(b => b.disabled = true);
+      showFB('iq-feedback', isCorrect?'correct':'wrong', isCorrect?'✓ Correct':'✗ Incorrect',
+        isCorrect ? correct.example : `"${correct.phrase}" means: ${correct.meaning}`);
+      updateStreak(isCorrect);
+      S.idiomStat++;
+      document.getElementById('idiom-chip').textContent = `${S.grammarCorrect}/${S.grammarTotal}`;
+      saveProgress();
+    };
+    choicesEl.appendChild(btn);
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+//  SPELLING
+// ══════════════════════════════════════════════════════════
+function setSpellDiff(btn, diff) {
+  activatePills(document.getElementById('spell-diff-pills'), btn);
+  S.spellDiff = diff;
+  S.spellDone = [];
+  nextSpelling();
+}
+
+function nextSpelling() {
+  hideFB('spell-feedback');
+  const input = document.getElementById('spell-input');
+  input.value = '';
+  input.className = 'blank-input';
+  input.disabled = false;
+  input.focus();
+
+  let pool = SPELLING[S.spellDiff];
+  let unused = pool.filter(w => !S.spellDone.includes(w.word));
+  if (unused.length === 0) { S.spellDone = []; unused = pool; }
+
+  S.currentSpell = pick(unused);
+  S.spellDone.push(S.currentSpell.word);
+  document.getElementById('spell-hint').textContent = S.currentSpell.hint;
+  document.getElementById('spell-hint').style.cssText = '';
+}
+
+function checkSpelling() {
+  const input = document.getElementById('spell-input');
+  const answer = input.value.trim().toLowerCase();
+  if (!answer || !S.currentSpell) return;
+
+  S.spellTotal++;
+  const correct = answer === S.currentSpell.word.toLowerCase();
+  if (correct) S.spellCorrect++;
+
+  input.className = 'blank-input ' + (correct ? 'correct-input' : 'wrong-input');
+  input.disabled = true;
+
+  document.getElementById('spell-chip').textContent = `${S.spellCorrect} / ${S.spellTotal}`;
+  showFB('spell-feedback', correct?'correct':'wrong',
+    correct ? '✓ Correct!' : '✗ Incorrect',
+    correct ? `"${S.currentSpell.word}" — well done!`
+            : `The correct spelling is: <strong>${S.currentSpell.word}</strong>`);
+
+  updateStreak(correct);
+  saveProgress();
+}
+
+// ══════════════════════════════════════════════════════════
+//  PROGRESS
+// ══════════════════════════════════════════════════════════
+function updateProgress() {
+  document.getElementById('p-total').textContent = S.totalQ;
+  document.getElementById('p-correct').textContent = S.totalCorrect;
+  document.getElementById('p-streak').textContent = S.streak;
+  document.getElementById('p-vocab').textContent = S.vocabStat;
+  document.getElementById('p-idioms').textContent = S.idiomStat;
+  const acc = S.totalQ > 0 ? Math.round((S.totalCorrect/S.totalQ)*100)+'%' : '—';
+  document.getElementById('p-accuracy').textContent = acc;
+
+  const tips = [
+    'Try the Spelling section on Hard for a real challenge!',
+    'Learning 5 new vocabulary words a day leads to 1,825 words a year.',
+    'Idioms make your English sound more natural and native-like.',
+    'Try all grammar topics to build a complete foundation.',
+    'Aim for a 7-day streak to build a solid study habit.',
+  ];
+  document.getElementById('p-tip').textContent = S.totalQ === 0
+    ? 'Complete some exercises to see your progress here.'
+    : pick(tips);
+}
+
+function resetProgress() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  localStorage.removeItem('lingua_progress');
+  Object.assign(S, {
+    grammarCorrect:0,grammarTotal:0,streak:0,
+    totalQ:0,totalCorrect:0,vocabStat:0,idiomStat:0,
+    vocabCount:0,spellCorrect:0,spellTotal:0,idiomDone:0
+  });
+  document.getElementById('streak-badge').textContent = '🔥 0 streak';
+  document.getElementById('grammar-chip').textContent = '0 / 0';
+  document.getElementById('vocab-count').textContent = '0 seen';
+  document.getElementById('spell-chip').textContent = '0 / 0';
+  updateProgress();
+}
+
+// ══════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════
+loadProgress();
+S.idiomShuffled = shuffle(IDIOMS);
+// Show first idiom on load
+const firstIdiom = S.idiomShuffled[S.idiomIndex++];
+document.getElementById('i-phrase').textContent = firstIdiom.phrase;
+document.getElementById('i-meaning').textContent = '💡 ' + firstIdiom.meaning;
+document.getElementById('i-example').textContent = firstIdiom.example;
+</script>
+</body>
+</html>
