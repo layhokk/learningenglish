@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liahona — Learn English Free</title>
+<title>Lingua — Learn English Free</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -449,6 +449,143 @@ nav {
 .idiom-meaning { font-size: 14px; color: var(--ink); margin-bottom: 5px; }
 .idiom-example { font-size: 13px; color: var(--mid); font-style: italic; }
 
+/* ── FLOATING REQUEST BUTTON ── */
+.fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 200;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(13,115,119,0.35);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.fab:hover { background: #0a5e62; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,115,119,0.4); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(28,27,24,0.5);
+  backdrop-filter: blur(3px);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  overflow: hidden;
+  animation: modal-in 0.22s ease;
+}
+@keyframes modal-in {
+  from { opacity:0; transform: translateY(16px) scale(0.97); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+.modal-head {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-head h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.modal-close {
+  background: var(--bg);
+  border: none;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--mid);
+  transition: all 0.15s;
+}
+.modal-close:hover { background: var(--rule); color: var(--ink); }
+.modal-body { padding: 22px 24px; }
+.modal-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 8px;
+}
+.request-types {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.req-type {
+  background: var(--bg);
+  border: 1.5px solid var(--rule);
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.13s;
+  border-style: solid;
+}
+.req-type:hover { border-color: var(--teal); background: var(--teal-lt); }
+.req-type.selected { border-color: var(--teal); background: var(--teal-lt); }
+.req-type-icon { font-size: 18px; margin-bottom: 4px; }
+.req-type-name { font-size: 13px; font-weight: 600; color: var(--ink); display:block; }
+.req-type-desc { font-size: 11px; color: var(--mid); display:block; }
+.modal-textarea {
+  width: 100%;
+  border: 1.5px solid var(--rule);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 100px;
+  background: white;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 14px;
+}
+.modal-textarea:focus { border-color: var(--teal); }
+.modal-textarea::placeholder { color: #C0BCB5; }
+.modal-footer {
+  display: flex;
+  gap: 9px;
+  justify-content: flex-end;
+}
+.modal-success {
+  text-align: center;
+  padding: 28px 24px 32px;
+  display: none;
+}
+.modal-success.show { display: block; }
+.success-icon { font-size: 40px; margin-bottom: 12px; }
+.success-title { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 6px; }
+.success-sub { color: var(--mid); font-size: 14px; line-height:1.5; }
+
 /* ── FOOTER ── */
 footer {
   text-align: center;
@@ -475,7 +612,7 @@ footer em { font-family: 'Fraunces', serif; font-style: italic; color: var(--tea
 <body>
 
 <nav>
-  <div class="logo"><em>Liahona</em> English</div>
+  <div class="logo"><em>Lingua</em> English</div>
   <div class="nav-pills">
     <button class="nav-pill active" onclick="switchPanel('grammar',this)">Grammar</button>
     <button class="nav-pill" onclick="switchPanel('vocab',this)">Vocabulary</button>
@@ -487,7 +624,7 @@ footer em { font-family: 'Fraunces', serif; font-style: italic; color: var(--tea
 </nav>
 
 <div class="hero">
-  <div class="eyebrow">100% free</div>
+  <div class="eyebrow">No sign-up · No API · 100% free</div>
   <h1>Learn English<br><em>anywhere</em></h1>
   <p>Grammar, vocabulary, idioms, and spelling — all built in, works offline, no account needed.</p>
 </div>
@@ -1285,6 +1422,155 @@ const firstIdiom = S.idiomShuffled[S.idiomIndex++];
 document.getElementById('i-phrase').textContent = firstIdiom.phrase;
 document.getElementById('i-meaning').textContent = '💡 ' + firstIdiom.meaning;
 document.getElementById('i-example').textContent = firstIdiom.example;
+</script>
+
+<!-- ═══════════════════════════════════════
+     FLOATING REQUEST BUTTON
+════════════════════════════════════════ -->
+<button class="fab" onclick="openModal()">
+  <span>💌</span> Send a request
+</button>
+
+<!-- REQUEST MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+
+    <!-- FORM VIEW -->
+    <div id="modal-form-view">
+      <div class="modal-head">
+        <h3>Send a request</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-label">What kind of request?</div>
+        <div class="request-types" id="req-types">
+          <button class="req-type selected" onclick="selectType(this)" data-subject="New Vocabulary Request">
+            <div class="req-type-icon">📖</div>
+            <span class="req-type-name">New Vocabulary</span>
+            <span class="req-type-desc">Suggest a word to add</span>
+          </button>
+          <button class="req-type" onclick="selectType(this)" data-subject="New Grammar Question">
+            <div class="req-type-icon">✏️</div>
+            <span class="req-type-name">Grammar Question</span>
+            <span class="req-type-desc">Suggest a new question</span>
+          </button>
+          <button class="req-type" onclick="selectType(this)" data-subject="New Idiom Suggestion">
+            <div class="req-type-icon">💬</div>
+            <span class="req-type-name">New Idiom</span>
+            <span class="req-type-desc">Suggest an idiom</span>
+          </button>
+          <button class="req-type" onclick="selectType(this)" data-subject="Bug Report">
+            <div class="req-type-icon">🐛</div>
+            <span class="req-type-name">Bug Report</span>
+            <span class="req-type-desc">Something not working?</span>
+          </button>
+          <button class="req-type" onclick="selectType(this)" data-subject="Feature Idea">
+            <div class="req-type-icon">💡</div>
+            <span class="req-type-name">Feature Idea</span>
+            <span class="req-type-desc">Suggest an improvement</span>
+          </button>
+          <button class="req-type" onclick="selectType(this)" data-subject="General Feedback">
+            <div class="req-type-icon">📝</div>
+            <span class="req-type-name">Other</span>
+            <span class="req-type-desc">General feedback</span>
+          </button>
+        </div>
+        <div class="modal-label">Your message</div>
+        <textarea class="modal-textarea" id="req-message" placeholder="Describe your request in detail…"></textarea>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="sendRequest()">Send via email ✉️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS VIEW -->
+    <div class="modal-success" id="modal-success-view">
+      <div class="success-icon">✉️</div>
+      <div class="success-title">Email opened!</div>
+      <p class="success-sub">Your email app should have opened with the message ready.<br>Thank you for helping improve <em style="font-family:'Fraunces',serif;color:var(--teal)">Lingua</em>!</p>
+      <div style="margin-top:20px">
+        <button class="btn btn-primary" onclick="closeModal()">Done</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── MODAL CONFIG — change this to your email address ──
+const OWNER_EMAIL = 'layhok.houn@email.com';
+
+let selectedSubject = 'New Vocabulary Request';
+
+function openModal() {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-form-view').style.display = 'block';
+  document.getElementById('modal-success-view').classList.remove('show');
+  document.getElementById('req-message').value = '';
+  document.getElementById('req-message').focus();
+  // reset to first option
+  document.querySelectorAll('.req-type').forEach(b => b.classList.remove('selected'));
+  document.querySelector('.req-type').classList.add('selected');
+  selectedSubject = document.querySelector('.req-type').dataset.subject;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function selectType(btn) {
+  document.querySelectorAll('.req-type').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedSubject = btn.dataset.subject;
+
+  // Update placeholder based on type
+  const placeholders = {
+    'New Vocabulary Request': 'e.g. Please add the word "persevere" — it means to continue despite difficulty.',
+    'New Grammar Question': 'e.g. Please add more questions about the present perfect tense.',
+    'New Idiom Suggestion': 'e.g. Please add "kick the bucket" — it means to die.',
+    'Bug Report': 'e.g. In the Spelling section, the word "accommodate" shows wrong feedback.',
+    'Feature Idea': 'e.g. It would be great to have a pronunciation guide for each word.',
+    'General Feedback': 'Write your message here…',
+  };
+  document.getElementById('req-message').placeholder = placeholders[selectedSubject] || 'Describe your request…';
+}
+
+function sendRequest() {
+  const message = document.getElementById('req-message').value.trim();
+  if (!message) {
+    document.getElementById('req-message').focus();
+    document.getElementById('req-message').style.borderColor = 'var(--red)';
+    setTimeout(() => document.getElementById('req-message').style.borderColor = '', 1500);
+    return;
+  }
+
+  const subject = encodeURIComponent('[Lingua] ' + selectedSubject);
+  const body = encodeURIComponent(
+    selectedSubject + '\n' +
+    '─'.repeat(30) + '\n\n' +
+    message + '\n\n' +
+    '─'.repeat(30) + '\n' +
+    'Sent from Lingua English Learning'
+  );
+
+  window.location.href = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+
+  // Show success
+  document.getElementById('modal-form-view').style.display = 'none';
+  document.getElementById('modal-success-view').classList.add('show');
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
 </script>
 </body>
 </html>
