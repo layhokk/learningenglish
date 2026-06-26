@@ -449,6 +449,161 @@ nav {
 .idiom-meaning { font-size: 14px; color: var(--ink); margin-bottom: 5px; }
 .idiom-example { font-size: 13px; color: var(--mid); font-style: italic; }
 
+/* ── SPEAKING COACH STYLES ── */
+.mic-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 20px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+.mic-btn {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  background: var(--teal-lt);
+  border: 2px solid #8ECECE;
+  color: var(--teal);
+  transition: all 0.18s;
+}
+.mic-btn:hover { transform: scale(1.06); background: #d0ecec; }
+.mic-btn.recording {
+  background: var(--red-lt);
+  border-color: #F0ADAD;
+  color: var(--red);
+  animation: mic-pulse 1.2s infinite;
+}
+@keyframes mic-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(184,50,50,0.2); }
+  50%      { box-shadow: 0 0 0 10px rgba(184,50,50,0); }
+}
+.mic-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--mid);
+  text-transform: uppercase;
+}
+.no-support-bar {
+  background: var(--amber-lt);
+  border: 1px solid #F0C97D;
+  border-radius: 9px;
+  padding: 12px 15px;
+  font-size: 13px;
+  color: var(--amber);
+  margin-bottom: 16px;
+  display: none;
+}
+.speak-transcript {
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 52px;
+  margin-bottom: 14px;
+  color: var(--mid);
+  font-style: italic;
+}
+.speak-transcript.has-text {
+  color: var(--ink);
+  font-style: normal;
+}
+.ai-result-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  display: none;
+}
+.ai-result-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+}
+.ai-result-head span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid);
+  flex: 1;
+}
+.ai-status-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: var(--bg);
+  color: var(--mid);
+  border: 1px solid var(--rule);
+}
+.ai-status-tag.perfect { background: var(--green-lt); color: var(--green); border-color: #9AD4BC; }
+.ai-status-tag.corrected { background: var(--amber-lt); color: var(--amber); border-color: #F0C97D; }
+.ai-result-body {
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.ai-result-body.loading { color: var(--mid); font-style: italic; }
+.speak-spinner {
+  display: inline-block;
+  width: 13px; height: 13px;
+  border: 2px solid var(--rule);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: -2px;
+  margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.speak-history { margin-top: 4px; }
+.speak-history-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.speak-history-item:last-child { border-bottom: none; }
+.speak-history-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+.speak-history-tag.perfect { background: var(--green-lt); color: var(--green); }
+.speak-history-tag.corrected { background: var(--amber-lt); color: var(--amber); }
+.speak-history-original {
+  font-size: 13px;
+  color: var(--mid);
+  font-style: italic;
+  margin-bottom: 4px;
+}
+.speak-history-feedback {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
 /* ── FLOATING REQUEST BUTTON ── */
 .fab {
   position: fixed;
@@ -618,15 +773,16 @@ footer em { font-family: 'Fraunces', serif; font-style: italic; color: var(--tea
     <button class="nav-pill" onclick="switchPanel('vocab',this)">Vocabulary</button>
     <button class="nav-pill" onclick="switchPanel('idioms',this)">Idioms</button>
     <button class="nav-pill" onclick="switchPanel('spelling',this)">Spelling</button>
+    <button class="nav-pill" onclick="switchPanel('speaking',this)">Speaking</button>
     <button class="nav-pill" onclick="switchPanel('progress',this)">Progress</button>
   </div>
   <div class="streak-badge" id="streak-badge">🔥 0 streak</div>
 </nav>
 
 <div class="hero">
-  <div class="eyebrow">No sign-up · No API · 100% free</div>
+  <div class="eyebrow">No sign-up · 100% free</div>
   <h1>Learn English<br><em>anywhere</em></h1>
-  <p>Grammar, vocabulary, idioms, and spelling — all built in, works offline, no account needed.</p>
+  <p>Grammar, vocabulary, idioms, spelling, and speaking practice — all built in, no account needed.</p>
 </div>
 
 <!-- ════════════════════════════════════════
@@ -793,6 +949,56 @@ footer em { font-family: 'Fraunces', serif; font-style: italic; color: var(--tea
 </div>
 
 <!-- ════════════════════════════════════════
+     SPEAKING PANEL
+════════════════════════════════════════ -->
+<div id="panel-speaking" class="panel">
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-head">
+        <div class="card-icon ci-teal">🎙️</div>
+        <h2>Speaking Coach</h2>
+        <div class="chip" id="speak-chip">0 attempts</div>
+      </div>
+      <div class="card-body">
+
+        <div class="no-support-bar" id="speak-no-support">
+          ⚠️ Speech recognition requires Chrome or Edge on desktop. Try opening this page in Chrome.
+        </div>
+
+        <div class="feedback info show" style="margin-bottom:18px;">
+          <div class="fb-label">How it works</div>
+          Press the mic, speak a sentence in English, then stop. The AI will check your grammar and give you corrections with clear explanations.
+        </div>
+
+        <div class="mic-area">
+          <button class="mic-btn" id="speak-mic-btn" onclick="toggleSpeaking()" aria-label="Start recording">
+            <span id="speak-mic-icon">🎙️</span>
+          </button>
+          <div class="mic-label" id="speak-mic-label">Tap to speak</div>
+        </div>
+
+        <div class="lbl" id="speak-transcript-lbl" style="display:none;">You said</div>
+        <div class="speak-transcript" id="speak-transcript" style="display:none;">Listening…</div>
+
+        <div class="ai-result-card" id="speak-result-card">
+          <div class="ai-result-head">
+            <span>Grammar feedback</span>
+            <div class="ai-status-tag" id="speak-status-tag">Checking…</div>
+          </div>
+          <div class="ai-result-body loading" id="speak-result-body"></div>
+        </div>
+
+        <div id="speak-history-section" style="display:none;">
+          <div class="lbl" style="margin-top:8px;">Session history</div>
+          <div class="speak-history" id="speak-history-list"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
      PROGRESS PANEL
 ════════════════════════════════════════ -->
 <div id="panel-progress" class="panel">
@@ -853,7 +1059,6 @@ footer em { font-family: 'Fraunces', serif; font-style: italic; color: var(--tea
 // ══════════════════════════════════════════════════════════
 
 const GRAMMAR = [
-  // TENSES
   {topic:'tenses',q:'She ___ to work every day by bus.',choices:['A: goes','B: go','C: is going','D: went'],correct:'A',exp:'We use the simple present for regular habits and routines.'},
   {topic:'tenses',q:'They ___ dinner when I arrived.',choices:['A: have','B: were having','C: are having','D: had'],correct:'B',exp:'The past continuous describes an action in progress when another action interrupted it.'},
   {topic:'tenses',q:'By next year, I ___ here for ten years.',choices:['A: will work','B: have worked','C: will have worked','D: worked'],correct:'C',exp:'Future perfect expresses an action that will be complete before a future point in time.'},
@@ -864,7 +1069,6 @@ const GRAMMAR = [
   {topic:'tenses',q:'Look out! You ___ fall!',choices:['A: are going to','B: will','C: would','D: shall'],correct:'A',exp:'"Going to" expresses a prediction based on present evidence.'},
   {topic:'tenses',q:'I ___ my homework before dinner tonight.',choices:['A: finish','B: will finish','C: finished','D: am finishing'],correct:'B',exp:'Simple future (will) is used for predictions and decisions made at the moment of speaking.'},
   {topic:'tenses',q:'She ___ for three hours before she finally found a solution.',choices:['A: thought','B: was thinking','C: had been thinking','D: has thought'],correct:'C',exp:'Past perfect continuous emphasises the duration of an activity before a past point.'},
-  // ARTICLES
   {topic:'articles',q:'I saw ___ elephant at the zoo yesterday.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" is used before words starting with a vowel sound. "Elephant" begins with a vowel sound.'},
   {topic:'articles',q:'___ sun rises in the east.',choices:['A: A','B: An','C: The','D: —'],correct:'C',exp:'We use "the" with unique things — there is only one sun.'},
   {topic:'articles',q:'She wants to be ___ engineer when she grows up.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" is used before vowel sounds. "Engineer" starts with a vowel sound.'},
@@ -873,7 +1077,6 @@ const GRAMMAR = [
   {topic:'articles',q:'I had ___ interesting conversation with her.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" before "interesting" because it starts with a vowel sound.'},
   {topic:'articles',q:'___ life is full of surprises.',choices:['A: A','B: An','C: The','D: —'],correct:'D',exp:'No article is used with abstract nouns in a general sense.'},
   {topic:'articles',q:'She is ___ best student in the class.',choices:['A: a','B: an','C: the','D: —'],correct:'C',exp:'"The" is used with superlatives.'},
-  // PREPOSITIONS
   {topic:'prepositions',q:'She has been waiting ___ two hours.',choices:['A: since','B: for','C: during','D: from'],correct:'B',exp:'"For" is used with a duration of time (how long).'},
   {topic:'prepositions',q:'I\'ve lived here ___ 2018.',choices:['A: for','B: during','C: since','D: from'],correct:'C',exp:'"Since" is used with a specific point in time (when something started).'},
   {topic:'prepositions',q:'The meeting is ___ Monday morning.',choices:['A: in','B: at','C: on','D: by'],correct:'C',exp:'"On" is used with days and dates.'},
@@ -881,20 +1084,17 @@ const GRAMMAR = [
   {topic:'prepositions',q:'He arrived ___ the airport an hour early.',choices:['A: in','B: on','C: to','D: at'],correct:'D',exp:'"At" is used for specific places like airports, stations, and buildings.'},
   {topic:'prepositions',q:'The picture is hanging ___ the wall.',choices:['A: at','B: on','C: in','D: above'],correct:'B',exp:'"On" is used for surfaces.'},
   {topic:'prepositions',q:'She\'s good ___ mathematics.',choices:['A: at','B: in','C: for','D: on'],correct:'A',exp:'"Good at" is the correct collocation for skills and subjects.'},
-  // CONDITIONALS
   {topic:'conditionals',q:'If it rains tomorrow, we ___ the match.',choices:['A: cancel','B: will cancel','C: would cancel','D: cancelled'],correct:'B',exp:'First conditional (real possibility): if + present simple, will + infinitive.'},
   {topic:'conditionals',q:'If I ___ rich, I would travel the world.',choices:['A: am','B: was','C: were','D: will be'],correct:'C',exp:'Second conditional uses "were" (formal) for hypothetical present/future situations.'},
   {topic:'conditionals',q:'If she had studied harder, she ___ the exam.',choices:['A: would pass','B: would have passed','C: will pass','D: passed'],correct:'B',exp:'Third conditional: if + past perfect, would have + past participle. For unreal past situations.'},
   {topic:'conditionals',q:'Unless you hurry, you ___ the bus.',choices:['A: miss','B: will miss','C: missed','D: would miss'],correct:'B',exp:'"Unless" means "if not." It follows the same pattern as the first conditional.'},
   {topic:'conditionals',q:'If water ___ to 100°C, it boils.',choices:['A: heats','B: heated','C: would heat','D: will heat'],correct:'A',exp:'Zero conditional uses present simple in both clauses for universal truths.'},
-  // MODAL VERBS
   {topic:'modal',q:'You ___ see a doctor. That cough sounds serious.',choices:['A: could','B: might','C: should','D: can'],correct:'C',exp:'"Should" expresses advice or recommendation.'},
   {topic:'modal',q:'She ___ speak five languages fluently.',choices:['A: can','B: should','C: must','D: would'],correct:'A',exp:'"Can" expresses ability.'},
   {topic:'modal',q:'You ___ smoke in this building. It\'s forbidden.',choices:['A: shouldn\'t','B: mustn\'t','C: don\'t have to','D: couldn\'t'],correct:'B',exp:'"Mustn\'t" expresses prohibition — something is not allowed.'},
   {topic:'modal',q:'You ___ bring your passport — it\'s optional.',choices:['A: mustn\'t','B: shouldn\'t','C: don\'t have to','D: can\'t'],correct:'C',exp:'"Don\'t have to" means it is not necessary, but there\'s no prohibition.'},
   {topic:'modal',q:'That ___ be Tom at the door — he said he\'d be here at 7.',choices:['A: can','B: must','C: should','D: would'],correct:'B',exp:'"Must" expresses logical deduction — strong certainty.'},
   {topic:'modal',q:'___ you mind closing the window, please?',choices:['A: Will','B: Would','C: Should','D: Shall'],correct:'B',exp:'"Would you mind" is a polite way to make a request.'},
-  // PASSIVE VOICE
   {topic:'passive',q:'The letter ___ by the manager yesterday.',choices:['A: signed','B: was signed','C: has signed','D: is signed'],correct:'B',exp:'Past simple passive: was/were + past participle.'},
   {topic:'passive',q:'English ___ all over the world.',choices:['A: speaks','B: spoke','C: is spoken','D: was spoken'],correct:'C',exp:'Present simple passive: is/are + past participle for general facts.'},
   {topic:'passive',q:'The new bridge ___ by next year.',choices:['A: will complete','B: will be completed','C: is completed','D: completes'],correct:'B',exp:'Future passive: will be + past participle.'},
@@ -903,7 +1103,6 @@ const GRAMMAR = [
 ];
 
 const VOCAB = [
-  // BUSINESS
   {topic:'business',word:'negotiate',pos:'verb',def:'To discuss something in order to reach an agreement.',ex:'We need to negotiate the price before signing the contract.'},
   {topic:'business',word:'revenue',pos:'noun',def:'The total income produced by a business.',ex:'The company\'s revenue increased by 15% this quarter.'},
   {topic:'business',word:'delegate',pos:'verb',def:'To give part of your work or responsibility to someone else.',ex:'A good manager knows how to delegate tasks effectively.'},
@@ -912,21 +1111,18 @@ const VOCAB = [
   {topic:'business',word:'strategic',pos:'adjective',def:'Relating to a plan designed to achieve a long-term aim.',ex:'They made a strategic decision to enter the Asian market.'},
   {topic:'business',word:'stakeholder',pos:'noun',def:'A person with an interest or concern in a business.',ex:'We presented the report to all key stakeholders.'},
   {topic:'business',word:'invoice',pos:'noun',def:'A list of goods or services provided, with a statement of the price.',ex:'Please send the invoice to our accounts department.'},
-  // TRAVEL
   {topic:'travel',word:'itinerary',pos:'noun',def:'A detailed plan or route of a journey.',ex:'The travel agent prepared a full itinerary for our trip to Japan.'},
   {topic:'travel',word:'layover',pos:'noun',def:'A period of rest or waiting before a further stage of a journey.',ex:'We had a three-hour layover in Dubai.'},
   {topic:'travel',word:'departure',pos:'noun',def:'The action of leaving, typically to start a journey.',ex:'Our departure from London is at 6 a.m.'},
   {topic:'travel',word:'accommodation',pos:'noun',def:'A place where someone can live or stay, especially temporarily.',ex:'We booked accommodation near the city centre.'},
   {topic:'travel',word:'currency',pos:'noun',def:'A system of money in general use in a particular country.',ex:'Make sure you exchange your currency before you arrive.'},
   {topic:'travel',word:'passport',pos:'noun',def:'An official document issued by a government, certifying the holder\'s identity.',ex:'Never leave your passport in your hotel room.'},
-  // ACADEMIC
   {topic:'academic',word:'hypothesis',pos:'noun',def:'A proposed explanation made on the basis of limited evidence as a starting point for investigation.',ex:'The scientist tested her hypothesis with a series of experiments.'},
   {topic:'academic',word:'analyze',pos:'verb',def:'To examine methodically and in detail.',ex:'We analyzed the data and found a significant pattern.'},
   {topic:'academic',word:'cite',pos:'verb',def:'To refer to a source of information or evidence.',ex:'You must cite all sources in your research paper.'},
   {topic:'academic',word:'critique',pos:'noun',def:'A detailed analysis and assessment of something.',ex:'She wrote a critique of the author\'s argument.'},
   {topic:'academic',word:'elaborate',pos:'verb',def:'To develop or present a theory in further detail.',ex:'Could you elaborate on your point about climate change?'},
   {topic:'academic',word:'implication',pos:'noun',def:'A likely consequence of something.',ex:'The implications of this discovery are enormous.'},
-  // EVERYDAY
   {topic:'everyday',word:'accomplish',pos:'verb',def:'To achieve or complete successfully.',ex:'I want to accomplish my goals before the end of the year.'},
   {topic:'everyday',word:'convenient',pos:'adjective',def:'Fitting in well with a person\'s needs or activities.',ex:'The supermarket is conveniently located near our house.'},
   {topic:'everyday',word:'reluctant',pos:'adjective',def:'Unwilling and hesitant; disinclined.',ex:'She was reluctant to ask for help.'},
@@ -934,7 +1130,6 @@ const VOCAB = [
   {topic:'everyday',word:'grateful',pos:'adjective',def:'Feeling or showing an appreciation for something done.',ex:'I am so grateful for your help yesterday.'},
   {topic:'everyday',word:'curious',pos:'adjective',def:'Eager to know or learn something.',ex:'Children are naturally curious about the world around them.'},
   {topic:'everyday',word:'recommend',pos:'verb',def:'To put forward with approval as being suitable for a purpose.',ex:'Can you recommend a good restaurant near here?'},
-  // EMOTION
   {topic:'emotion',word:'melancholy',pos:'noun/adj',def:'A feeling of pensive sadness, typically with no obvious cause.',ex:'There was a sense of melancholy in his voice.'},
   {topic:'emotion',word:'apprehensive',pos:'adjective',def:'Anxious or fearful that something bad will happen.',ex:'She felt apprehensive before her driving test.'},
   {topic:'emotion',word:'elated',pos:'adjective',def:'Very happy and excited.',ex:'He was elated when he heard the good news.'},
@@ -1010,34 +1205,12 @@ const SPELLING = {
 //  STATE
 // ══════════════════════════════════════════════════════════
 const S = {
-  grammarTopic: 'all',
-  grammarDone: [],
-  grammarCorrect: 0,
-  grammarTotal: 0,
-  grammarAnswered: false,
-
-  vocabTopic: 'all',
-  vocabSeen: [],
-  vocabCount: 0,
-  currentVocab: null,
-  vocabFlipped: false,
-
-  idiomMode: 'learn',
-  idiomIndex: 0,
-  idiomShuffled: [],
-  idiomDone: 0,
-
-  spellDiff: 'easy',
-  spellDone: [],
-  spellCorrect: 0,
-  spellTotal: 0,
-  currentSpell: null,
-
-  streak: 0,
-  totalQ: 0,
-  totalCorrect: 0,
-  vocabStat: 0,
-  idiomStat: 0,
+  grammarTopic: 'all', grammarDone: [], grammarCorrect: 0, grammarTotal: 0, grammarAnswered: false,
+  vocabTopic: 'all', vocabSeen: [], vocabCount: 0, currentVocab: null, vocabFlipped: false,
+  idiomMode: 'learn', idiomIndex: 0, idiomShuffled: [], idiomDone: 0,
+  spellDiff: 'easy', spellDone: [], spellCorrect: 0, spellTotal: 0, currentSpell: null,
+  streak: 0, totalQ: 0, totalCorrect: 0, vocabStat: 0, idiomStat: 0,
+  speakAttempts: 0,
 };
 
 // ══════════════════════════════════════════════════════════
@@ -1063,7 +1236,6 @@ function showFB(id, type, label, text) {
   document.getElementById(id+'-text').innerHTML = text;
 }
 function hideFB(id) { document.getElementById(id).className = 'feedback'; }
-
 function updateStreak(correct) {
   S.totalQ++;
   if (correct) { S.streak++; S.totalCorrect++; }
@@ -1101,45 +1273,28 @@ function switchPanel(id, btn) {
 // ══════════════════════════════════════════════════════════
 function setGTopic(btn, topic) {
   activatePills(document.getElementById('grammar-topic-pills'), btn);
-  S.grammarTopic = topic;
-  S.grammarDone = [];
-  S.grammarAnswered = false;
+  S.grammarTopic = topic; S.grammarDone = []; S.grammarAnswered = false;
   hideFB('g-feedback');
   document.getElementById('g-question').textContent = 'Topic changed. Press "Next question".';
   document.getElementById('g-question').style.cssText = 'color:var(--mid);font-style:italic;font-size:14px';
   document.getElementById('g-choices').innerHTML = '';
   updateGrammarChip();
 }
-
 function getGrammarPool() {
   return S.grammarTopic === 'all' ? GRAMMAR : GRAMMAR.filter(q => q.topic === S.grammarTopic);
 }
-
 function nextGrammar() {
-  S.grammarAnswered = false;
-  hideFB('g-feedback');
+  S.grammarAnswered = false; hideFB('g-feedback');
   document.getElementById('g-choices').innerHTML = '';
-
   let pool = getGrammarPool();
-  let available = pool.filter((_,i) => !S.grammarDone.includes(i + (S.grammarTopic==='all'?0:0)));
-  // track by question text instead of index for simplicity
   let unused = pool.filter(q => !S.grammarDone.includes(q.q));
-  if (unused.length === 0) {
-    S.grammarDone = [];
-    unused = pool;
-  }
-
+  if (unused.length === 0) { S.grammarDone = []; unused = pool; }
   const q = pick(unused);
   S.grammarDone.push(q.q);
-
   const qEl = document.getElementById('g-question');
-  qEl.textContent = q.q;
-  qEl.style.cssText = '';
-
-  // progress bar
+  qEl.textContent = q.q; qEl.style.cssText = '';
   const pct = Math.round((S.grammarDone.length / pool.length) * 100);
   document.getElementById('g-prog').style.width = pct + '%';
-
   const choicesEl = document.getElementById('g-choices');
   choicesEl.innerHTML = '';
   q.choices.forEach(c => {
@@ -1152,12 +1307,9 @@ function nextGrammar() {
     choicesEl.appendChild(btn);
   });
 }
-
 function answerGrammar(btn, correct, exp) {
   if (S.grammarAnswered) return;
-  S.grammarAnswered = true;
-  S.grammarTotal++;
-
+  S.grammarAnswered = true; S.grammarTotal++;
   const isCorrect = btn.dataset.letter === correct;
   if (isCorrect) { btn.classList.add('correct'); S.grammarCorrect++; }
   else {
@@ -1168,11 +1320,8 @@ function answerGrammar(btn, correct, exp) {
   }
   document.querySelectorAll('#g-choices .c-btn').forEach(b => b.disabled = true);
   showFB('g-feedback', isCorrect?'correct':'wrong', isCorrect?'✓ Correct':'✗ Incorrect', exp);
-  updateStreak(isCorrect);
-  updateGrammarChip();
-  saveProgress();
+  updateStreak(isCorrect); updateGrammarChip(); saveProgress();
 }
-
 function updateGrammarChip() {
   const chip = document.getElementById('grammar-chip');
   chip.textContent = `${S.grammarCorrect} / ${S.grammarTotal}`;
@@ -1184,58 +1333,44 @@ function updateGrammarChip() {
 // ══════════════════════════════════════════════════════════
 function setVTopic(btn, topic) {
   activatePills(document.getElementById('vocab-topic-pills'), btn);
-  S.vocabTopic = topic;
-  S.vocabSeen = [];
+  S.vocabTopic = topic; S.vocabSeen = [];
 }
-
 function getVocabPool() {
   return S.vocabTopic === 'all' ? VOCAB : VOCAB.filter(v => v.topic === S.vocabTopic);
 }
-
 function nextVocab() {
   hideFB('v-feedback');
   document.getElementById('v-card').classList.remove('flipped');
   document.getElementById('v-quiz-area').style.display = 'none';
   document.getElementById('v-quiz-btn').style.display = 'none';
   S.vocabFlipped = false;
-
   let pool = getVocabPool();
   let unused = pool.filter(v => !S.vocabSeen.includes(v.word));
   if (unused.length === 0) { S.vocabSeen = []; unused = pool; }
-
   const v = pick(unused);
-  S.vocabSeen.push(v.word);
-  S.currentVocab = v;
-  S.vocabStat++;
-
+  S.vocabSeen.push(v.word); S.currentVocab = v; S.vocabStat++;
   document.getElementById('v-word').textContent = v.word;
   document.getElementById('v-pos').textContent = v.pos;
   document.getElementById('v-def').textContent = v.def;
   document.getElementById('v-ex').textContent = '"' + v.ex + '"';
-
   S.vocabCount++;
   document.getElementById('vocab-count').textContent = S.vocabCount + ' seen';
   document.getElementById('v-quiz-btn').style.display = 'inline-flex';
   saveProgress();
 }
-
 function flipVocab() {
   if (!S.currentVocab) return;
   S.vocabFlipped = !S.vocabFlipped;
   document.getElementById('v-card').classList.toggle('flipped', S.vocabFlipped);
 }
-
 function quizVocab() {
   if (!S.currentVocab) return;
   const v = S.currentVocab;
   document.getElementById('v-quiz-area').style.display = 'block';
   hideFB('v-feedback');
-
-  // Build 4 choices: 1 correct example sentence + 3 wrong uses
   const pool = VOCAB.filter(x => x.word !== v.word);
   const wrongs = shuffle(pool).slice(0,3).map(w => w.ex.replace(w.word, v.word));
   const allChoices = shuffle([v.ex, ...wrongs]);
-
   const choicesEl = document.getElementById('v-quiz-choices');
   choicesEl.innerHTML = '';
   allChoices.forEach((c, i) => {
@@ -1252,8 +1387,7 @@ function quizVocab() {
       choicesEl.querySelectorAll('.c-btn').forEach(b => b.disabled = true);
       showFB('v-feedback', correct?'correct':'wrong', correct?'✓ Correct':'✗ Incorrect',
         correct ? `"${v.word}" is used correctly in that sentence.` : `The correct use is: "${v.ex}"`);
-      updateStreak(correct);
-      saveProgress();
+      updateStreak(correct); saveProgress();
     };
     choicesEl.appendChild(btn);
   });
@@ -1270,34 +1404,26 @@ function setIdiomMode(btn, mode) {
   hideFB('iq-feedback');
   if (mode === 'quiz') nextIdiomQuiz();
 }
-
 function nextIdiom() {
   if (S.idiomMode === 'learn') {
     if (S.idiomShuffled.length === 0 || S.idiomIndex >= S.idiomShuffled.length) {
-      S.idiomShuffled = shuffle(IDIOMS);
-      S.idiomIndex = 0;
+      S.idiomShuffled = shuffle(IDIOMS); S.idiomIndex = 0;
     }
     const id = S.idiomShuffled[S.idiomIndex++];
     document.getElementById('i-phrase').textContent = id.phrase;
     document.getElementById('i-meaning').textContent = '💡 ' + id.meaning;
     document.getElementById('i-example').textContent = id.example;
-    S.idiomDone++;
-    S.idiomStat++;
+    S.idiomDone++; S.idiomStat++;
     document.getElementById('idiom-chip').textContent = S.idiomDone + ' learned';
     saveProgress();
-  } else {
-    nextIdiomQuiz();
-  }
+  } else { nextIdiomQuiz(); }
 }
-
 function nextIdiomQuiz() {
   hideFB('iq-feedback');
   const correct = pick(IDIOMS);
   document.getElementById('iq-phrase').textContent = correct.phrase;
-
   const wrongs = shuffle(IDIOMS.filter(i => i.phrase !== correct.phrase)).slice(0,3);
   const allChoices = shuffle([correct, ...wrongs]);
-
   const choicesEl = document.getElementById('iq-choices');
   choicesEl.innerHTML = '';
   allChoices.forEach((c, i) => {
@@ -1314,9 +1440,7 @@ function nextIdiomQuiz() {
       choicesEl.querySelectorAll('.c-btn').forEach(b => b.disabled = true);
       showFB('iq-feedback', isCorrect?'correct':'wrong', isCorrect?'✓ Correct':'✗ Incorrect',
         isCorrect ? correct.example : `"${correct.phrase}" means: ${correct.meaning}`);
-      updateStreak(isCorrect);
-      S.idiomStat++;
-      document.getElementById('idiom-chip').textContent = `${S.grammarCorrect}/${S.grammarTotal}`;
+      updateStreak(isCorrect); S.idiomStat++;
       saveProgress();
     };
     choicesEl.appendChild(btn);
@@ -1328,50 +1452,183 @@ function nextIdiomQuiz() {
 // ══════════════════════════════════════════════════════════
 function setSpellDiff(btn, diff) {
   activatePills(document.getElementById('spell-diff-pills'), btn);
-  S.spellDiff = diff;
-  S.spellDone = [];
-  nextSpelling();
+  S.spellDiff = diff; S.spellDone = []; nextSpelling();
 }
-
 function nextSpelling() {
   hideFB('spell-feedback');
   const input = document.getElementById('spell-input');
-  input.value = '';
-  input.className = 'blank-input';
-  input.disabled = false;
-  input.focus();
-
+  input.value = ''; input.className = 'blank-input';
+  input.disabled = false; input.focus();
   let pool = SPELLING[S.spellDiff];
   let unused = pool.filter(w => !S.spellDone.includes(w.word));
   if (unused.length === 0) { S.spellDone = []; unused = pool; }
-
   S.currentSpell = pick(unused);
   S.spellDone.push(S.currentSpell.word);
   document.getElementById('spell-hint').textContent = S.currentSpell.hint;
   document.getElementById('spell-hint').style.cssText = '';
 }
-
 function checkSpelling() {
   const input = document.getElementById('spell-input');
   const answer = input.value.trim().toLowerCase();
   if (!answer || !S.currentSpell) return;
-
   S.spellTotal++;
   const correct = answer === S.currentSpell.word.toLowerCase();
   if (correct) S.spellCorrect++;
-
   input.className = 'blank-input ' + (correct ? 'correct-input' : 'wrong-input');
   input.disabled = true;
-
   document.getElementById('spell-chip').textContent = `${S.spellCorrect} / ${S.spellTotal}`;
   showFB('spell-feedback', correct?'correct':'wrong',
     correct ? '✓ Correct!' : '✗ Incorrect',
     correct ? `"${S.currentSpell.word}" — well done!`
             : `The correct spelling is: <strong>${S.currentSpell.word}</strong>`);
-
-  updateStreak(correct);
-  saveProgress();
+  updateStreak(correct); saveProgress();
 }
+
+// ══════════════════════════════════════════════════════════
+//  SPEAKING COACH
+// ══════════════════════════════════════════════════════════
+(function initSpeaking() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    document.getElementById('speak-no-support').style.display = 'block';
+    document.getElementById('speak-mic-btn').disabled = true;
+    document.getElementById('speak-mic-btn').style.opacity = '0.4';
+    return;
+  }
+
+  let recognition, isRecording = false, currentTranscript = '';
+
+  function setupRecognition() {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = true;
+    recognition.continuous = false;
+
+    recognition.onresult = (e) => {
+      let interim = '', final = '';
+      for (let i = 0; i < e.results.length; i++) {
+        if (e.results[i].isFinal) final += e.results[i][0].transcript;
+        else interim += e.results[i][0].transcript;
+      }
+      currentTranscript = (final || interim).trim();
+      const el = document.getElementById('speak-transcript');
+      el.textContent = currentTranscript || 'Listening…';
+      el.className = currentTranscript ? 'speak-transcript has-text' : 'speak-transcript';
+    };
+
+    recognition.onend = () => {
+      setRecording(false);
+      if (currentTranscript) correctGrammar(currentTranscript);
+    };
+
+    recognition.onerror = (e) => {
+      setRecording(false);
+      if (e.error !== 'no-speech') {
+        const card = document.getElementById('speak-result-card');
+        const body = document.getElementById('speak-result-body');
+        card.style.display = 'block';
+        body.className = 'ai-result-body loading';
+        body.textContent = 'Microphone error: ' + e.error + '. Please allow microphone access.';
+      }
+    };
+  }
+
+  function setRecording(on) {
+    isRecording = on;
+    const btn = document.getElementById('speak-mic-btn');
+    const icon = document.getElementById('speak-mic-icon');
+    const lbl = document.getElementById('speak-mic-label');
+    btn.classList.toggle('recording', on);
+    icon.textContent = on ? '⏹️' : '🎙️';
+    lbl.textContent = on ? 'Listening… tap to stop' : 'Tap to speak';
+    btn.setAttribute('aria-label', on ? 'Stop recording' : 'Start recording');
+  }
+
+  window.toggleSpeaking = function() {
+    if (isRecording) {
+      recognition.stop();
+    } else {
+      currentTranscript = '';
+      document.getElementById('speak-result-card').style.display = 'none';
+      const transcriptEl = document.getElementById('speak-transcript');
+      transcriptEl.style.display = 'block';
+      document.getElementById('speak-transcript-lbl').style.display = 'block';
+      transcriptEl.textContent = 'Listening…';
+      transcriptEl.className = 'speak-transcript';
+      setupRecognition();
+      recognition.start();
+      setRecording(true);
+    }
+  };
+
+  async function correctGrammar(text) {
+    const card = document.getElementById('speak-result-card');
+    const body = document.getElementById('speak-result-body');
+    const tag = document.getElementById('speak-status-tag');
+    card.style.display = 'block';
+    body.className = 'ai-result-body loading';
+    body.innerHTML = '<span class="speak-spinner"></span> Checking your grammar…';
+    tag.className = 'ai-status-tag';
+    tag.textContent = 'Checking…';
+
+    S.speakAttempts++;
+    document.getElementById('speak-chip').textContent = S.speakAttempts + ' attempt' + (S.speakAttempts !== 1 ? 's' : '');
+
+    const prompt = `You are a warm, encouraging English grammar coach inside a learning website called Lingua.
+
+The student just said: "${text}"
+
+Your task:
+1. Check for grammar, vocabulary, or sentence structure mistakes.
+2. If the sentence is perfect, say so warmly and briefly explain one thing they did well (1 sentence).
+3. If there are mistakes, give the corrected version first, then explain each correction clearly and simply (1–2 sentences each).
+4. End with one short, memorable tip they can apply next time.
+5. Write in plain conversational prose — no bullet points, no markdown, no headers.
+6. Keep the total response under 100 words.`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const data = await res.json();
+      const reply = data.content?.find(b => b.type === 'text')?.text || 'No response received.';
+      const isPerfect = /perfect|correct|well done|no mistake|no error|great job|excellent/i.test(reply);
+
+      body.className = 'ai-result-body';
+      body.textContent = reply;
+      tag.className = 'ai-status-tag ' + (isPerfect ? 'perfect' : 'corrected');
+      tag.textContent = isPerfect ? '✓ Perfect' : '✎ Corrected';
+
+      addSpeakHistory(text, reply, isPerfect);
+    } catch (err) {
+      body.className = 'ai-result-body loading';
+      body.textContent = 'Something went wrong. Please try again.';
+      tag.textContent = 'Error';
+    }
+  }
+
+  function addSpeakHistory(original, feedback, isPerfect) {
+    const section = document.getElementById('speak-history-section');
+    const list = document.getElementById('speak-history-list');
+    section.style.display = 'block';
+    const item = document.createElement('div');
+    item.className = 'speak-history-item';
+    const tagClass = isPerfect ? 'perfect' : 'corrected';
+    const tagText = isPerfect ? '✓ Perfect' : '✎ Corrected';
+    item.innerHTML = `
+      <span class="speak-history-tag ${tagClass}">${tagText}</span>
+      <div class="speak-history-original">"${original}"</div>
+      <div class="speak-history-feedback">${feedback}</div>
+    `;
+    list.insertBefore(item, list.firstChild);
+  }
+})();
 
 // ══════════════════════════════════════════════════════════
 //  PROGRESS
@@ -1384,31 +1641,31 @@ function updateProgress() {
   document.getElementById('p-idioms').textContent = S.idiomStat;
   const acc = S.totalQ > 0 ? Math.round((S.totalCorrect/S.totalQ)*100)+'%' : '—';
   document.getElementById('p-accuracy').textContent = acc;
-
   const tips = [
     'Try the Spelling section on Hard for a real challenge!',
     'Learning 5 new vocabulary words a day leads to 1,825 words a year.',
     'Idioms make your English sound more natural and native-like.',
     'Try all grammar topics to build a complete foundation.',
     'Aim for a 7-day streak to build a solid study habit.',
+    'Use the Speaking Coach daily to build fluency and confidence.',
   ];
   document.getElementById('p-tip').textContent = S.totalQ === 0
     ? 'Complete some exercises to see your progress here.'
     : pick(tips);
 }
-
 function resetProgress() {
   if (!confirm('Reset all progress? This cannot be undone.')) return;
   localStorage.removeItem('lingua_progress');
   Object.assign(S, {
     grammarCorrect:0,grammarTotal:0,streak:0,
     totalQ:0,totalCorrect:0,vocabStat:0,idiomStat:0,
-    vocabCount:0,spellCorrect:0,spellTotal:0,idiomDone:0
+    vocabCount:0,spellCorrect:0,spellTotal:0,idiomDone:0,speakAttempts:0
   });
   document.getElementById('streak-badge').textContent = '🔥 0 streak';
   document.getElementById('grammar-chip').textContent = '0 / 0';
   document.getElementById('vocab-count').textContent = '0 seen';
   document.getElementById('spell-chip').textContent = '0 / 0';
+  document.getElementById('speak-chip').textContent = '0 attempts';
   updateProgress();
 }
 
@@ -1417,7 +1674,6 @@ function resetProgress() {
 // ══════════════════════════════════════════════════════════
 loadProgress();
 S.idiomShuffled = shuffle(IDIOMS);
-// Show first idiom on load
 const firstIdiom = S.idiomShuffled[S.idiomIndex++];
 document.getElementById('i-phrase').textContent = firstIdiom.phrase;
 document.getElementById('i-meaning').textContent = '💡 ' + firstIdiom.meaning;
@@ -1434,8 +1690,6 @@ document.getElementById('i-example').textContent = firstIdiom.example;
 <!-- REQUEST MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
   <div class="modal">
-
-    <!-- FORM VIEW -->
     <div id="modal-form-view">
       <div class="modal-head">
         <h3>Send a request</h3>
@@ -1483,8 +1737,6 @@ document.getElementById('i-example').textContent = firstIdiom.example;
         </div>
       </div>
     </div>
-
-    <!-- SUCCESS VIEW -->
     <div class="modal-success" id="modal-success-view">
       <div class="success-icon">✉️</div>
       <div class="success-title">Email opened!</div>
@@ -1493,44 +1745,34 @@ document.getElementById('i-example').textContent = firstIdiom.example;
         <button class="btn btn-primary" onclick="closeModal()">Done</button>
       </div>
     </div>
-
   </div>
 </div>
 
 <script>
-// ── MODAL CONFIG — change this to your email address ──
 const OWNER_EMAIL = 'layhok.houn@email.com';
-
 let selectedSubject = 'New Vocabulary Request';
-
 function openModal() {
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('modal-form-view').style.display = 'block';
   document.getElementById('modal-success-view').classList.remove('show');
   document.getElementById('req-message').value = '';
   document.getElementById('req-message').focus();
-  // reset to first option
   document.querySelectorAll('.req-type').forEach(b => b.classList.remove('selected'));
   document.querySelector('.req-type').classList.add('selected');
   selectedSubject = document.querySelector('.req-type').dataset.subject;
   document.body.style.overflow = 'hidden';
 }
-
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
 function handleOverlayClick(e) {
   if (e.target === document.getElementById('modal-overlay')) closeModal();
 }
-
 function selectType(btn) {
   document.querySelectorAll('.req-type').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   selectedSubject = btn.dataset.subject;
-
-  // Update placeholder based on type
   const placeholders = {
     'New Vocabulary Request': 'e.g. Please add the word "persevere" — it means to continue despite difficulty.',
     'New Grammar Question': 'e.g. Please add more questions about the present perfect tense.',
@@ -1541,7 +1783,6 @@ function selectType(btn) {
   };
   document.getElementById('req-message').placeholder = placeholders[selectedSubject] || 'Describe your request…';
 }
-
 function sendRequest() {
   const message = document.getElementById('req-message').value.trim();
   if (!message) {
@@ -1550,27 +1791,16 @@ function sendRequest() {
     setTimeout(() => document.getElementById('req-message').style.borderColor = '', 1500);
     return;
   }
-
   const subject = encodeURIComponent('[Lingua] ' + selectedSubject);
   const body = encodeURIComponent(
-    selectedSubject + '\n' +
-    '─'.repeat(30) + '\n\n' +
-    message + '\n\n' +
-    '─'.repeat(30) + '\n' +
-    'Sent from Lingua English Learning'
+    selectedSubject + '\n' + '─'.repeat(30) + '\n\n' + message + '\n\n' +
+    '─'.repeat(30) + '\nSent from Lingua English Learning'
   );
-
   window.location.href = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
-
-  // Show success
   document.getElementById('modal-form-view').style.display = 'none';
   document.getElementById('modal-success-view').classList.add('show');
 }
-
-// Close modal on Escape key
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
 </html>
