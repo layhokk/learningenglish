@@ -1,53 +1,23 @@
-// Idioms panel (learn + quiz modes).
-function setIdiomMode(btn, mode) {
-  activatePills(btn.closest('.pill-row'), btn);
-  S.idiomMode = mode;
-  document.getElementById('idiom-learn-area').style.display = mode === 'learn' ? 'block' : 'none';
-  document.getElementById('idiom-quiz-area').style.display = mode === 'quiz' ? 'block' : 'none';
-  hideFB('iq-feedback');
-  if (mode === 'quiz') nextIdiomQuiz();
-}
-function showIdiom(id) {
-  document.getElementById('i-phrase').textContent = id.phrase;
-  document.getElementById('i-meaning').textContent = '💡 ' + id.meaning;
-  document.getElementById('i-example').textContent = id.example;
-}
-function nextIdiom() {
-  if (S.idiomMode === 'learn') {
-    if (S.idiomShuffled.length === 0 || S.idiomIndex >= S.idiomShuffled.length) {
-      S.idiomShuffled = shuffle(IDIOMS); S.idiomIndex = 0;
-    }
-    showIdiom(S.idiomShuffled[S.idiomIndex++]);
-    S.idiomDone++; S.idiomStat++;
-    document.getElementById('idiom-chip').textContent = S.idiomDone + ' learned';
-    saveProgress();
-  } else { nextIdiomQuiz(); }
-}
-function nextIdiomQuiz() {
-  hideFB('iq-feedback');
-  const correct = pick(IDIOMS);
-  document.getElementById('iq-phrase').textContent = correct.phrase;
-  const wrongs = shuffle(IDIOMS.filter(i => i.phrase !== correct.phrase)).slice(0, 3);
-  const allChoices = shuffle([correct, ...wrongs]);
-  const choicesEl = document.getElementById('iq-choices');
-  choicesEl.innerHTML = '';
-  allChoices.forEach((c, i) => {
-    const letters = ['A', 'B', 'C', 'D'];
-    const btn = document.createElement('button');
-    btn.className = 'c-btn';
-    btn.innerHTML = `<span class="c-letter">${letters[i]}</span><span>${c.meaning}</span>`;
-    btn.onclick = () => {
-      const isCorrect = c.phrase === correct.phrase;
-      btn.classList.add(isCorrect ? 'correct' : 'wrong');
-      if (!isCorrect) choicesEl.querySelectorAll('.c-btn').forEach(b => {
-        if (b.querySelector('span:last-child').textContent === correct.meaning) b.classList.add('reveal');
-      });
-      choicesEl.querySelectorAll('.c-btn').forEach(b => b.disabled = true);
-      showFB('iq-feedback', isCorrect ? 'correct' : 'wrong', isCorrect ? '✓ Correct' : '✗ Incorrect',
-        isCorrect ? correct.example : `"${correct.phrase}" means: ${correct.meaning}`);
-      updateStreak(isCorrect); S.idiomStat++;
-      saveProgress();
-    };
-    choicesEl.appendChild(btn);
-  });
-}
+// Idioms. Add new ones to the array.
+const IDIOMS = [
+  {phrase:'Break the ice',meaning:'To do or say something to relieve tension or start a conversation.',example:'"He told a joke to break the ice at the meeting."'},
+  {phrase:'Hit the nail on the head',meaning:'To describe exactly what is causing a situation or problem.',example:'"You hit the nail on the head — that\'s exactly the issue."'},
+  {phrase:'Bite the bullet',meaning:'To endure a painful or difficult situation that is unavoidable.',example:'"I didn\'t want to go to the dentist, but I bit the bullet."'},
+  {phrase:'Spill the beans',meaning:'To reveal secret information accidentally or indiscreetly.',example:'"Who spilled the beans about the surprise party?"'},
+  {phrase:'A blessing in disguise',meaning:'Something that seems bad at first but turns out to be good.',example:'"Losing that job was a blessing in disguise — I found a better one."'},
+  {phrase:'Beat around the bush',meaning:'To avoid talking about something directly.',example:'"Stop beating around the bush and tell me what happened."'},
+  {phrase:'Cost an arm and a leg',meaning:'To be very expensive.',example:'"That restaurant costs an arm and a leg."'},
+  {phrase:'Once in a blue moon',meaning:'Very rarely.',example:'"I only eat fast food once in a blue moon."'},
+  {phrase:'Under the weather',meaning:'Feeling slightly ill.',example:'"I\'m feeling a bit under the weather today."'},
+  {phrase:'Hit the sack',meaning:'To go to bed.',example:'"I\'m exhausted — I\'m going to hit the sack."'},
+  {phrase:'Let the cat out of the bag',meaning:'To accidentally reveal a secret.',example:'"She let the cat out of the bag about the wedding plans."'},
+  {phrase:'The ball is in your court',meaning:'It is your responsibility to take the next action.',example:'"I\'ve made my offer — the ball is in your court now."'},
+  {phrase:'A piece of cake',meaning:'Something very easy to do.',example:'"The exam was a piece of cake."'},
+  {phrase:'Pull someone\'s leg',meaning:'To joke or tease someone.',example:'"Don\'t worry, I was just pulling your leg!"'},
+  {phrase:'Burn the midnight oil',meaning:'To work late into the night.',example:'"She burned the midnight oil to finish the report."'},
+  {phrase:'Sit on the fence',meaning:'To avoid taking sides in a dispute.',example:'"Stop sitting on the fence and give me your opinion."'},
+  {phrase:'Jump on the bandwagon',meaning:'To follow a popular trend.',example:'"Everyone is jumping on the bandwagon with electric cars."'},
+  {phrase:'Hit the books',meaning:'To study.',example:'"Exams are next week, so I need to hit the books."'},
+  {phrase:'Bite off more than you can chew',meaning:'To take on more than you can handle.',example:'"He bit off more than he could chew with three jobs."'},
+  {phrase:'Get out of hand',meaning:'To become impossible to control.',example:'"The party got out of hand very quickly."'},
+];

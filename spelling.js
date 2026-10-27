@@ -1,34 +1,39 @@
-// Spelling practice panel.
-function setSpellDiff(btn, diff) {
-  activatePills(document.getElementById('spell-diff-pills'), btn);
-  S.spellDiff = diff; S.spellDone = []; nextSpelling();
-}
-function nextSpelling() {
-  hideFB('spell-feedback');
-  const input = document.getElementById('spell-input');
-  input.value = ''; input.className = 'blank-input';
-  input.disabled = false; input.focus();
-  const pool = SPELLING[S.spellDiff];
-  let unused = pool.filter(w => !S.spellDone.includes(w.word));
-  if (unused.length === 0) { S.spellDone = []; unused = pool; }
-  S.currentSpell = pick(unused);
-  S.spellDone.push(S.currentSpell.word);
-  document.getElementById('spell-hint').textContent = S.currentSpell.hint;
-  document.getElementById('spell-hint').style.cssText = '';
-}
-function checkSpelling() {
-  const input = document.getElementById('spell-input');
-  const answer = input.value.trim().toLowerCase();
-  if (!answer || !S.currentSpell) return;
-  S.spellTotal++;
-  const correct = answer === S.currentSpell.word.toLowerCase();
-  if (correct) S.spellCorrect++;
-  input.className = 'blank-input ' + (correct ? 'correct-input' : 'wrong-input');
-  input.disabled = true;
-  document.getElementById('spell-chip').textContent = `${S.spellCorrect} / ${S.spellTotal}`;
-  showFB('spell-feedback', correct ? 'correct' : 'wrong',
-    correct ? '✓ Correct!' : '✗ Incorrect',
-    correct ? `"${S.currentSpell.word}" — well done!`
-            : `The correct spelling is: <strong>${S.currentSpell.word}</strong>`);
-  updateStreak(correct); saveProgress();
-}
+// Spelling words by difficulty. Add new ones to the arrays.
+const SPELLING = {
+  easy:[
+    {word:'beautiful',hint:'Very pleasing to the senses or mind.'},
+    {word:'necessary',hint:'Required to be done; essential.'},
+    {word:'separate',hint:'To divide or cause to move apart.'},
+    {word:'definitely',hint:'Without doubt; certainly.'},
+    {word:'embarrass',hint:'To cause to feel awkward or ashamed.'},
+    {word:'occurred',hint:'Happened; took place.'},
+    {word:'receive',hint:'To get or be given something.'},
+    {word:'believe',hint:'To accept something as true.'},
+    {word:'achieve',hint:'To successfully reach a desired goal.'},
+    {word:'friend',hint:'A person with whom you have a bond of mutual affection.'},
+  ],
+  medium:[
+    {word:'accommodate',hint:'To provide space or lodging for someone.'},
+    {word:'conscientious',hint:'Wishing to do what is right; very careful.'},
+    {word:'millennium',hint:'A period of one thousand years.'},
+    {word:'entrepreneur',hint:'A person who starts a business.'},
+    {word:'bureaucracy',hint:'A system of government with many rules and procedures.'},
+    {word:'acknowledge',hint:'To recognise or admit the existence of something.'},
+    {word:'perseverance',hint:'Continued effort despite difficulty.'},
+    {word:'Mediterranean',hint:'Relating to the sea between Europe and Africa.'},
+    {word:'miscellaneous',hint:'A variety of different kinds.'},
+    {word:'pronunciation',hint:'The way in which a word is said.'},
+  ],
+  hard:[
+    {word:'conscientious',hint:'Taking great care to do things correctly.'},
+    {word:'onomatopoeia',hint:'A word that phonetically imitates the sound it describes.'},
+    {word:'supercilious',hint:'Behaving as though you are superior to others.'},
+    {word:'serendipity',hint:'The occurrence of events by chance in a happy way.'},
+    {word:'acquiesce',hint:'To accept something without protest.'},
+    {word:'nonchalant',hint:'Feeling or appearing casually calm and relaxed.'},
+    {word:'perspicacious',hint:'Having a ready insight; shrewd.'},
+    {word:'ephemeral',hint:'Lasting for a very short time.'},
+    {word:'idiosyncratic',hint:'Relating to peculiar individual behaviour.'},
+    {word:'surreptitious',hint:'Kept secret, especially because it would not be approved of.'},
+  ]
+};

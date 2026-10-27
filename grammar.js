@@ -1,57 +1,46 @@
-// Grammar practice panel.
-function setGTopic(btn, topic) {
-  activatePills(document.getElementById('grammar-topic-pills'), btn);
-  S.grammarTopic = topic; S.grammarDone = []; S.grammarAnswered = false;
-  hideFB('g-feedback');
-  document.getElementById('g-question').textContent = 'Topic changed. Press "Next question".';
-  document.getElementById('g-question').style.cssText = 'color:var(--mid);font-style:italic;font-size:14px';
-  document.getElementById('g-choices').innerHTML = '';
-  updateGrammarChip();
-}
-function getGrammarPool() {
-  return S.grammarTopic === 'all' ? GRAMMAR : GRAMMAR.filter(q => q.topic === S.grammarTopic);
-}
-function nextGrammar() {
-  S.grammarAnswered = false; hideFB('g-feedback');
-  document.getElementById('g-choices').innerHTML = '';
-  const pool = getGrammarPool();
-  let unused = pool.filter(q => !S.grammarDone.includes(q.q));
-  if (unused.length === 0) { S.grammarDone = []; unused = pool; }
-  const q = pick(unused);
-  S.grammarDone.push(q.q);
-  const qEl = document.getElementById('g-question');
-  qEl.textContent = q.q; qEl.style.cssText = '';
-  const pct = Math.round((S.grammarDone.length / pool.length) * 100);
-  document.getElementById('g-prog').style.width = pct + '%';
-  const choicesEl = document.getElementById('g-choices');
-  choicesEl.innerHTML = '';
-  q.choices.forEach(c => {
-    const letter = c.split(':')[0].trim();
-    const btn = document.createElement('button');
-    btn.className = 'c-btn';
-    btn.innerHTML = `<span class="c-letter">${letter}</span><span>${c.substring(3)}</span>`;
-    btn.dataset.letter = letter;
-    btn.onclick = () => answerGrammar(btn, q.correct, q.exp);
-    choicesEl.appendChild(btn);
-  });
-}
-function answerGrammar(btn, correct, exp) {
-  if (S.grammarAnswered) return;
-  S.grammarAnswered = true; S.grammarTotal++;
-  const isCorrect = btn.dataset.letter === correct;
-  if (isCorrect) { btn.classList.add('correct'); S.grammarCorrect++; }
-  else {
-    btn.classList.add('wrong');
-    document.querySelectorAll('#g-choices .c-btn').forEach(b => {
-      if (b.dataset.letter === correct) b.classList.add('reveal');
-    });
-  }
-  document.querySelectorAll('#g-choices .c-btn').forEach(b => b.disabled = true);
-  showFB('g-feedback', isCorrect ? 'correct' : 'wrong', isCorrect ? '✓ Correct' : '✗ Incorrect', exp);
-  updateStreak(isCorrect); updateGrammarChip(); saveProgress();
-}
-function updateGrammarChip() {
-  const chip = document.getElementById('grammar-chip');
-  chip.textContent = `${S.grammarCorrect} / ${S.grammarTotal}`;
-  chip.className = 'chip' + (S.grammarTotal > 0 && S.grammarCorrect / S.grammarTotal >= 0.7 ? ' good' : '');
-}
+// Grammar questions. Add new ones to the array.
+// topic: tenses | articles | prepositions | conditionals | modal | passive
+// correct: the letter of the right choice ('A'..'D')
+const GRAMMAR = [
+  {topic:'tenses',q:'She ___ to work every day by bus.',choices:['A: goes','B: go','C: is going','D: went'],correct:'A',exp:'We use the simple present for regular habits and routines.'},
+  {topic:'tenses',q:'They ___ dinner when I arrived.',choices:['A: have','B: were having','C: are having','D: had'],correct:'B',exp:'The past continuous describes an action in progress when another action interrupted it.'},
+  {topic:'tenses',q:'By next year, I ___ here for ten years.',choices:['A: will work','B: have worked','C: will have worked','D: worked'],correct:'C',exp:'Future perfect expresses an action that will be complete before a future point in time.'},
+  {topic:'tenses',q:'I ___ this book already. I read it last summer.',choices:['A: have read','B: read','C: was reading','D: am reading'],correct:'A',exp:'Present perfect connects a past experience to the present moment.'},
+  {topic:'tenses',q:'When she arrived, we ___ for two hours.',choices:['A: waited','B: were waiting','C: had been waiting','D: have waited'],correct:'C',exp:'Past perfect continuous shows a continuous action that happened before a past moment.'},
+  {topic:'tenses',q:'He ___ his keys, so he couldn\'t get in.',choices:['A: loses','B: lost','C: has lost','D: had lost'],correct:'D',exp:'Past perfect shows an action completed before another past event.'},
+  {topic:'tenses',q:'The train ___ by the time we reached the station.',choices:['A: left','B: has left','C: had left','D: was leaving'],correct:'C',exp:'Past perfect is used for an action completed before a reference point in the past.'},
+  {topic:'tenses',q:'Look out! You ___ fall!',choices:['A: are going to','B: will','C: would','D: shall'],correct:'A',exp:'"Going to" expresses a prediction based on present evidence.'},
+  {topic:'tenses',q:'I ___ my homework before dinner tonight.',choices:['A: finish','B: will finish','C: finished','D: am finishing'],correct:'B',exp:'Simple future (will) is used for predictions and decisions made at the moment of speaking.'},
+  {topic:'tenses',q:'She ___ for three hours before she finally found a solution.',choices:['A: thought','B: was thinking','C: had been thinking','D: has thought'],correct:'C',exp:'Past perfect continuous emphasises the duration of an activity before a past point.'},
+  {topic:'articles',q:'I saw ___ elephant at the zoo yesterday.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" is used before words starting with a vowel sound. "Elephant" begins with a vowel sound.'},
+  {topic:'articles',q:'___ sun rises in the east.',choices:['A: A','B: An','C: The','D: —'],correct:'C',exp:'We use "the" with unique things — there is only one sun.'},
+  {topic:'articles',q:'She wants to be ___ engineer when she grows up.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" is used before vowel sounds. "Engineer" starts with a vowel sound.'},
+  {topic:'articles',q:'Can you pass me ___ salt, please?',choices:['A: a','B: an','C: the','D: —'],correct:'C',exp:'"The" is used when referring to a specific item both speakers know about.'},
+  {topic:'articles',q:'He plays ___ guitar beautifully.',choices:['A: a','B: an','C: the','D: —'],correct:'C',exp:'We use "the" with musical instruments.'},
+  {topic:'articles',q:'I had ___ interesting conversation with her.',choices:['A: a','B: an','C: the','D: —'],correct:'B',exp:'"An" before "interesting" because it starts with a vowel sound.'},
+  {topic:'articles',q:'___ life is full of surprises.',choices:['A: A','B: An','C: The','D: —'],correct:'D',exp:'No article is used with abstract nouns in a general sense.'},
+  {topic:'articles',q:'She is ___ best student in the class.',choices:['A: a','B: an','C: the','D: —'],correct:'C',exp:'"The" is used with superlatives.'},
+  {topic:'prepositions',q:'She has been waiting ___ two hours.',choices:['A: since','B: for','C: during','D: from'],correct:'B',exp:'"For" is used with a duration of time (how long).'},
+  {topic:'prepositions',q:'I\'ve lived here ___ 2018.',choices:['A: for','B: during','C: since','D: from'],correct:'C',exp:'"Since" is used with a specific point in time (when something started).'},
+  {topic:'prepositions',q:'The meeting is ___ Monday morning.',choices:['A: in','B: at','C: on','D: by'],correct:'C',exp:'"On" is used with days and dates.'},
+  {topic:'prepositions',q:'She was born ___ 1990.',choices:['A: on','B: at','C: in','D: for'],correct:'C',exp:'"In" is used with years, months, and longer periods.'},
+  {topic:'prepositions',q:'He arrived ___ the airport an hour early.',choices:['A: in','B: on','C: to','D: at'],correct:'D',exp:'"At" is used for specific places like airports, stations, and buildings.'},
+  {topic:'prepositions',q:'The picture is hanging ___ the wall.',choices:['A: at','B: on','C: in','D: above'],correct:'B',exp:'"On" is used for surfaces.'},
+  {topic:'prepositions',q:'She\'s good ___ mathematics.',choices:['A: at','B: in','C: for','D: on'],correct:'A',exp:'"Good at" is the correct collocation for skills and subjects.'},
+  {topic:'conditionals',q:'If it rains tomorrow, we ___ the match.',choices:['A: cancel','B: will cancel','C: would cancel','D: cancelled'],correct:'B',exp:'First conditional (real possibility): if + present simple, will + infinitive.'},
+  {topic:'conditionals',q:'If I ___ rich, I would travel the world.',choices:['A: am','B: was','C: were','D: will be'],correct:'C',exp:'Second conditional uses "were" (formal) for hypothetical present/future situations.'},
+  {topic:'conditionals',q:'If she had studied harder, she ___ the exam.',choices:['A: would pass','B: would have passed','C: will pass','D: passed'],correct:'B',exp:'Third conditional: if + past perfect, would have + past participle. For unreal past situations.'},
+  {topic:'conditionals',q:'Unless you hurry, you ___ the bus.',choices:['A: miss','B: will miss','C: missed','D: would miss'],correct:'B',exp:'"Unless" means "if not." It follows the same pattern as the first conditional.'},
+  {topic:'conditionals',q:'If water ___ to 100°C, it boils.',choices:['A: heats','B: heated','C: would heat','D: will heat'],correct:'A',exp:'Zero conditional uses present simple in both clauses for universal truths.'},
+  {topic:'modal',q:'You ___ see a doctor. That cough sounds serious.',choices:['A: could','B: might','C: should','D: can'],correct:'C',exp:'"Should" expresses advice or recommendation.'},
+  {topic:'modal',q:'She ___ speak five languages fluently.',choices:['A: can','B: should','C: must','D: would'],correct:'A',exp:'"Can" expresses ability.'},
+  {topic:'modal',q:'You ___ smoke in this building. It\'s forbidden.',choices:['A: shouldn\'t','B: mustn\'t','C: don\'t have to','D: couldn\'t'],correct:'B',exp:'"Mustn\'t" expresses prohibition — something is not allowed.'},
+  {topic:'modal',q:'You ___ bring your passport — it\'s optional.',choices:['A: mustn\'t','B: shouldn\'t','C: don\'t have to','D: can\'t'],correct:'C',exp:'"Don\'t have to" means it is not necessary, but there\'s no prohibition.'},
+  {topic:'modal',q:'That ___ be Tom at the door — he said he\'d be here at 7.',choices:['A: can','B: must','C: should','D: would'],correct:'B',exp:'"Must" expresses logical deduction — strong certainty.'},
+  {topic:'modal',q:'___ you mind closing the window, please?',choices:['A: Will','B: Would','C: Should','D: Shall'],correct:'B',exp:'"Would you mind" is a polite way to make a request.'},
+  {topic:'passive',q:'The letter ___ by the manager yesterday.',choices:['A: signed','B: was signed','C: has signed','D: is signed'],correct:'B',exp:'Past simple passive: was/were + past participle.'},
+  {topic:'passive',q:'English ___ all over the world.',choices:['A: speaks','B: spoke','C: is spoken','D: was spoken'],correct:'C',exp:'Present simple passive: is/are + past participle for general facts.'},
+  {topic:'passive',q:'The new bridge ___ by next year.',choices:['A: will complete','B: will be completed','C: is completed','D: completes'],correct:'B',exp:'Future passive: will be + past participle.'},
+  {topic:'passive',q:'The report ___ before the meeting starts.',choices:['A: must submit','B: must be submitted','C: must have submitted','D: must submitting'],correct:'B',exp:'Modal passive: modal + be + past participle.'},
+  {topic:'passive',q:'The windows ___ cleaned since last month.',choices:['A: haven\'t','B: haven\'t been','C: weren\'t','D: aren\'t'],correct:'B',exp:'Present perfect passive: have/has been + past participle.'},
+];
