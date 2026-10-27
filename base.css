@@ -1,0 +1,37 @@
+/* Base: reset, design tokens, body, footer */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg:       #F0EEE9;
+  --surface:  #FFFFFF;
+  --ink:      #1C1B18;
+  --mid:      #7A7670;
+  --rule:     #DDD9D2;
+  --teal:     #0D7377;
+  --teal-lt:  #E6F4F4;
+  --amber:    #C47A1E;
+  --amber-lt: #FEF4E3;
+  --red:      #B83232;
+  --red-lt:   #FCEAEA;
+  --green:    #2D6A4F;
+  --green-lt: #E8F5EE;
+  --radius:   14px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+footer {
+  text-align: center;
+  padding: 36px 24px;
+  color: var(--mid);
+  font-size: 12px;
+  border-top: 1px solid var(--rule);
+}
+footer em { font-family: 'Fraunces', serif; font-style: italic; color: var(--teal); }
